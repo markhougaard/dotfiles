@@ -1,5 +1,13 @@
 # Setting up a new machine
 
+Run this command:
+
+```zsh
+curl -Lks https://raw.githubusercontent.com/marksdk/dotfiles/master/install.sh | /bin/bash -x
+```
+
+This is what it does:
+
 1. Install Homebrew
 2. Add `mas` to Homebrew so it can install apps from the Mac App Store programatically
 3. Install `taps`, `brews`, and `casks` from `Brewfile`
@@ -50,6 +58,7 @@ fi;
 dot checkout
 dot config status.showUntrackedFiles no
 ```
+
 ## Sources
 
 The idea of using the $HOME dir as a sort-of-but-not-really git repository comes from this article: <https://www.atlassian.com/git/tutorials/dotfiles>. It removes the need for symlinking which was messed up for me, for some—still—unknown reason.
