@@ -1,0 +1,28 @@
+[user]
+	name = Mark Hougaard Jensen
+	email = mark@marks.dk
+	signingkey = 55C0024C39CCFA49
+[color]
+	ui = true
+[github]
+	user = marksdk
+	token = 9dea546ed4f7889d16a90738e88d26db1db66736
+[push]
+	default = simple
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+	process = git-lfs filter-process
+[core]
+	editor = code --wait
+[url "ssh://git@heroku.com/"]
+	insteadOf = https://git.heroku.com/
+[alias]
+	update = !git pull && git submodule update --init --recursive
+[commit]
+	gpgsign = true
