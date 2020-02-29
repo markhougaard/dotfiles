@@ -61,4 +61,6 @@ dot config status.showUntrackedFiles no
 
 ## Sources
 
-The idea of using the $HOME dir as a sort-of-but-not-really git repository comes from this article: <https://www.atlassian.com/git/tutorials/dotfiles>. It removes the need for symlinking which was messed up for me, for some—still—unknown reason.
+The idea of using the `$HOME` dir as a sort-of-but-not-really git repository comes from this article: <https://www.atlassian.com/git/tutorials/dotfiles>. It removes the need for symlinking which was messed up for me, for some—still—unknown reason. This article is based on this comment on Hacker News: <https://news.ycombinator.com/item?id=11070797> and I read about it here first: <https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles.html>.
+
+Throughout, my script refers to the directory `.dotfiles`, and the `git` command that works on that directory is aliased with `dot`. The articles refer to `.cfg` and `config`.
