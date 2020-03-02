@@ -82,9 +82,6 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-autoload -U promptinit; promptinit
-prompt pure
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -167,3 +164,7 @@ function mk() {
   mkdir -p "$@" && cd "$@"
 }
 alias dot='/usr/bin/git --git-dir=/Users/marks/.dotfiles/ --work-tree=/Users/marks'
+
+fpath+=/Users/marks/.zsh/pure 
+autoload -U promptinit; promptinit 
+prompt pure
