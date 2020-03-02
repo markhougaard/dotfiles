@@ -19,3 +19,4 @@ if [ $? = 0 ]; then
 fi;
 dot checkout
 dot config status.showUntrackedFiles no
+sh $HOME/macos.sh
