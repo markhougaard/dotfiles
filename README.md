@@ -57,6 +57,7 @@ if [ $? = 0 ]; then
 fi;
 dot checkout
 dot config status.showUntrackedFiles no
+sh $HOME/macos.sh
 ```
 
 ## Sources
@@ -64,3 +65,5 @@ dot config status.showUntrackedFiles no
 The idea of using the `$HOME` dir as a sort-of-but-not-really git repository comes from this article: <https://www.atlassian.com/git/tutorials/dotfiles>. It removes the need for symlinking which was messed up for me, for some—still—unknown reason. This article is based on this comment on Hacker News: <https://news.ycombinator.com/item?id=11070797> and I read about it here first: <https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles.html>.
 
 Throughout, my script refers to the directory `.dotfiles`, and the `git` command that works on that directory is aliased with `dot`. The articles refer to `.cfg` and `config`.
+
+You can set keyboard combinations with the Terminal. The meta-keys are set as @ for Command, $ for Shift, ~ for Alt and ^ for Ctrl.For system-wide shortcuts, you can use -g instead of the app identifier, e.g.`defaults write -g NSUserKeyEquivalents -dict-add "Menu Item" -string "@$~^k"`. Find all current keyboard shortcuts with `defaults find NSUserKeyEquivalents`. More info at <https://apple.stackexchange.com/questions/123382/is-there-a-way-to-save-your-custom-keyboard-shortcuts-in-a-config-file> and <http://hints.macworld.com/article.php?story=20131123074223584> and <https://ryanmo.co/2017/01/05/setting-keyboard-shortcuts-from-terminal-in-macos/>
