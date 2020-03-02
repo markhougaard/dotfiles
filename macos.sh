@@ -22,7 +22,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null & 
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 64" ~/Library/Preferences/com.apple.finder.plist # Increase grid spacing for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist # Increase the size of icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:showItemInfo true" ~/Library/Preferences/com.apple.finder.plist # Show item info near icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom true" ~/Library/Preferences/com.apple.finder.plist # Show item info to the bottom of the icons on the desktop
+/usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" ~/Library/Preferences/com.apple.finder.plist # Show item info to the bottom of the icons on the desktop
+# defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true # Use scroll gesture with the Ctrl (^) modifier key to zoom
+# defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true # Use scroll gesture with the Ctrl (^) modifier key to zoom. Follow the keyboard focus while zoomed in
+# defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 # Hot corners. Possible values: 0: no-op. 2: Mission Control. 3: Show application windows. 4: Desktop. 5: Start screen saver. 6: Disable screen saver. 7: Dashboard. 10: Put display to sleep. 11: Launchpad. 12: Notification Center. 13: Lock Screen.
 defaults -currentHost write com.apple.screensaver idleTime -int 0 # System Preferences > Desktop & Screen Saver > Start after: Never
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 # System Preferences > Trackpad > Tap to click (also for login screen)
@@ -97,10 +100,14 @@ defaults write com.apple.mail DisableSendAnimations -bool true # Disable send an
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes" # Display emails in threaded mode, sorted by date (oldest at the top)
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes" # Display emails in threaded mode, sorted by date (oldest at the top)
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date" # Display emails in threaded mode, sorted by date (oldest at the top)
+defaults write com.apple.mail NSUserKeyEquivalents -dict-add "\033Message\033Archive" -string "@e" # Command-E
+defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9" # Command-Enter
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9" # Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false # Disable smart quotes
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true # Automatically quit printer app once the print jobs complete
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true # Auto-play videos when opened with QuickTime Player
+defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Next Tab" -string "@~\\U2192" # Command-Alt-Right
+defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Previous Tab" -string "@~\\U2190" # Command-Alt-Left
 defaults write com.apple.screencapture disable-shadow -bool true # Disable shadow in screenshots
 defaults write com.apple.screencapture location -string "${HOME}/Documents/Screenshots" # Save screenshots to the desktop
 defaults write com.apple.screencapture type -string "png" # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
@@ -117,9 +124,6 @@ defaults write com.apple.terminal StringEncodings -array 4 # Only use UTF-8 in T
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
-# defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true # Use scroll gesture with the Ctrl (^) modifier key to zoom
-# defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true # Use scroll gesture with the Ctrl (^) modifier key to zoom. Follow the keyboard focus while zoomed in
-# defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
