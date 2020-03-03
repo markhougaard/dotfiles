@@ -1,83 +1,73 @@
-# Homebrew
-tap 'homebrew/core'
-tap 'homebrew/cask'
-tap 'homebrew/cask-eid'
-tap 'homebrew/cask-fonts'
-tap 'homebrew/cask-versions'
-tap 'homebrew/cask-drivers'
-tap 'homebrew/bundle'
-tap 'homebrew/services'
-
-# Other taps
-tap 'dart-lang/dart'
-tap 'github/gh'
-tap 'heroku/brew'
-tap 'sass/sass'
-
-# Brews
-brew 'automake'
-brew 'awscli'
-brew 'clang-format'
-brew 'coreutils'
-brew 'ffmpeg'
-brew 'gifsicle'
-brew 'gifski'
-brew 'git'
-brew 'github/gh/gh'
-brew 'heroku/brew/heroku'
-brew 'hub'
-brew 'imagemagick'
-brew 'libyaml'
-brew 'mas'
-brew 'nginx'
-brew 'nvm'
-brew 'openssl@1.1'
-brew 's3cmd'
-brew 'sass/sass/sass'
-brew 'sqlite'
-brew 'wget'
-brew 'woff2'
-brew 'youtube-dl'
-brew 'zlib'
-brew 'zsh-completions'
-brew 'zsh-history-substring-search'
-brew 'zsh'
-
-# Apps
-cask 'now'
-cask '1password'
-cask 'alfred'
-cask 'anylist'
-cask 'backblaze'
-cask 'discord'
-cask 'docker'
-cask 'figma'
-cask 'firefox'
-cask 'google-chrome'
-cask 'gpg-suite'
-cask 'hazeover'
-cask 'kitematic'
-cask 'logitech-options'
-cask 'openvpn'
-cask 'rocket'
-cask 'slack'
-cask 'the-unarchiver'
-cask 'transmit'
-cask 'visual-studio-code'
-cask 'qmk-toolbox'
-
-# Quicklook
-cask 'qlcolorcode'
-cask 'qlmarkdown'
-cask 'quicklook-json'
-cask 'quicklook-csv'
-cask 'qlstephen'
-cask 'qlimagesize'
-cask 'qlvideo'
-
-# Mac App Store
-mas 'Dato', id: 1470584107
-mas 'gifski', id: 1351639930
-mas 'iA Writer', id: 775737590
-mas 'Magnet', id: 441258766
-mas 'Lungo', id: 1263070803
+tap "dart-lang/dart"
+tap "github/gh"
+tap "heroku/brew"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-eid"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "osx-cross/avr"
+tap "sass/sass"
+brew "automake"
+brew "openssl@1.1"
+brew "readline"
+brew "sqlite"
+brew "awscli"
+brew "python", link: false
+brew "glib"
+brew "clang-format"
+brew "coreutils"
+brew "dfu-programmer"
+brew "ffmpeg"
+brew "gifsicle"
+brew "gifski"
+brew "git"
+brew "hub"
+brew "imagemagick"
+brew "libyaml"
+brew "mas"
+brew "nginx"
+brew "nvm"
+brew "s3cmd"
+brew "wget"
+brew "woff2"
+brew "youtube-dl"
+brew "zlib"
+brew "zsh"
+brew "zsh-completions"
+brew "zsh-history-substring-search"
+brew "github/gh/gh"
+brew "heroku/brew/heroku"
+brew "osx-cross/avr/avr-gcc"
+brew "sass/sass/sass"
+cask "backblaze"
+cask "gpg-suite"
+cask "logitech-options"
+cask "now"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "rectangle"
+mas "1Password 7", id: 1333542190
+mas "Captured", id: 414675451
+mas "Dato", id: 1470584107
+mas "Deliveries", id: 924726344
+mas "Gestimer", id: 990588172
+mas "Ghostery Lite", id: 1436953057
+mas "Gifski", id: 1351639930
+mas "GIPHY CAPTURE", id: 668208984
+mas "HazeOver", id: 430798174
+mas "Hidden Bar", id: 1452453066
+mas "iA Writer", id: 775737590
+mas "Lungo", id: 1263070803
+mas "Magnet", id: 441258766
+mas "Markoff", id: 1084713122
+mas "Plash", id: 1494023538
+mas "The Unarchiver", id: 425424353
