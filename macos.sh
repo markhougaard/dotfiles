@@ -135,7 +135,7 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling" # Alwa
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 # System Preferences > Trackpad > Tap to click (also for login screen)
 defaults write NSGlobalDomain com.apple.springing.delay -float 0 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true # Enable spring loading for directories
-defaults write NSGlobalDomain InitialKeyRepeat -int 10 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
+defaults write NSGlobalDomain InitialKeyRepeat -int 20 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false # Disable smart quotes as they’re annoying when typing code
@@ -143,6 +143,7 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false # Sa
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true # Expand save panel by default
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true # Expand print panel by default
+
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true # Expand print panel by default
 defaults write pro.writer.mac NSCloseAlwaysConfirmsChanges -bool false # Enable "auto-save" in iA Writer
 sudo chflags nohidden /Volumes # Show the /Volumes folder
