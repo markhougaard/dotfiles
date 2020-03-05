@@ -19,4 +19,5 @@ if [ $? = 0 ]; then
 fi;
 dot checkout
 dot config status.showUntrackedFiles no
+code --install-extension Shan.code-settings-sync
 sh $HOME/macos.sh
