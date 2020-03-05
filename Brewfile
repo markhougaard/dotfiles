@@ -1,4 +1,3 @@
-
 brew 'automake'
 brew 'awscli'
 brew 'clang-format'
