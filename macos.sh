@@ -125,6 +125,7 @@ defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
 defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
+defaults write NSGlobalDomain _HIHideMenuBar -bool true # Auto-hide the menu bar
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters" # Set language and text formats
@@ -143,7 +144,6 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false # Sa
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true # Expand save panel by default
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true # Expand print panel by default
-
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true # Expand print panel by default
 defaults write pro.writer.mac NSCloseAlwaysConfirmsChanges -bool false # Enable "auto-save" in iA Writer
 sudo chflags nohidden /Volumes # Show the /Volumes folder
