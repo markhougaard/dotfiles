@@ -1,7 +1,7 @@
 [user]
 	name = Mark Hougaard Jensen
 	email = mark@marks.dk
-	signingkey = 55C0024C39CCFA49
+	signingkey = 6ED07CAED2F7C701
 [color]
 	ui = true
 [github]
@@ -26,3 +26,5 @@
 	update = !git pull && git submodule update --init --recursive
 [commit]
 	gpgsign = true
+[gpg]
+	program = gpg
