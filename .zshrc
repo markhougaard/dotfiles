@@ -8,7 +8,7 @@ export ZSH="/Users/marks/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="marks"
+# ZSH_THEME="pure"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -82,32 +82,6 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # To use "$EDITOR" as a variable in the shell, we need to set which editor to use. In this case it's VS Code.
 export VISUAL="code -w"
 export EDITOR="$VISUAL"
@@ -168,3 +142,5 @@ alias dot='/usr/bin/git --git-dir=/Users/marks/.dotfiles/ --work-tree=/Users/mar
 fpath+=/Users/marks/.zsh/pure 
 autoload -U promptinit; promptinit 
 prompt pure
+
+source /Users/marks/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
