@@ -29,6 +29,9 @@ fi
 
 ZSH_DISABLE_COMPFIX="true"
 
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
 source $ZSH/oh-my-zsh.sh
 
 # To use "$EDITOR" as a variable in the shell, we need to set which editor to use. In this case it's VS Code.
