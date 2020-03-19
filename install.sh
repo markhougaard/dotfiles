@@ -4,7 +4,6 @@ brew bundle
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 source ~/.zshrc
 mkdir -p "$HOME/.zsh" && git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
-echo "\nfpath+=$HOME/.zsh/pure \nautoload -U promptinit; promptinit \nprompt pure" >> $HOME/.zshrc
 git clone --bare https://github.com/marksdk/dotfiles.git $HOME/.dotfiles
 function dot {
    /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
@@ -19,5 +18,9 @@ if [ $? = 0 ]; then
 fi;
 dot checkout
 dot config status.showUntrackedFiles no
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/agkozak/zsh-z ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-z
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+source ~/.zshrc
 code --install-extension Shan.code-settings-sync
 sh $HOME/macos.sh
