@@ -68,11 +68,11 @@ defaults write com.apple.dock static-only -bool true # Show only open applicatio
 defaults write com.apple.dock tilesize -int 32 # Set the icon size of Dock items to 32 pixels
 defaults write com.apple.dock wvous-bl-corner -int 2 # Bottom left screen corner → Mission Control
 defaults write com.apple.dock wvous-bl-corner -int 4 # Bottom left screen corner → Desktop
-defaults write com.apple.dock wvous-bl-modifier -int 0 # Bottom left screen corner → Desktop
 defaults write com.apple.dock wvous-bl-modifier -int 0 # Bottom left screen corner → Mission Control
+defaults write com.apple.dock wvous-bl-modifier -int 13 # Bottom left screen corner → Desktop
 defaults write com.apple.dock wvous-tl-corner -int 3 # Top left screen corner → Show application windows
 defaults write com.apple.dock wvous-tl-modifier -int 0 # Top left screen corner → Show application windows
-defaults write com.apple.dock wvous-tr-corner -int 13 # Top right screen corner → Lock Screen
+defaults write com.apple.dock wvous-tr-corner -int 0 # Top right screen corner → Lock Screen
 defaults write com.apple.dock wvous-tr-modifier -int 0 # Top right screen corner → Lock Screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true # System Preferences > Trackpad > Tap to click (also for login screen)
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool false # System Preferences > Accessibility > Mouse & Trackpad > Trackpad Potions
@@ -104,6 +104,7 @@ defaults write com.apple.mail NSUserKeyEquivalents -dict-add "\033Message\033Arc
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9" # Command-Enter
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9" # Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false # Disable smart quotes
+defaults write com.apple.PowerChime ChimeOnNoHardware -bool true && killall PowerChime # Disable audible chime when plugging into power
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true # Automatically quit printer app once the print jobs complete
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true # Auto-play videos when opened with QuickTime Player
 defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Next Tab" -string "@~\\U2192" # Command-Alt-Right
