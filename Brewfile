@@ -9,26 +9,36 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
+tap "osx-cross/arm"
 tap "osx-cross/avr"
+tap "qmk/qmk"
 tap "sass/sass"
 # Tool for generating GNU Standards-compliant Makefiles
 brew "automake"
+# Library for USB device access
+brew "libusb"
+# Library for USB device access
+brew "libusb-compat"
+# Atmel AVR MCU programmer
+brew "avrdude"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@1.1"
 # Command-line interface for SQLite
 brew "sqlite"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# HID-based USB bootloader for AVR microcontrollers
+brew "bootloadhid"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
 brew "clang-format"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
-# Library for USB device access
-brew "libusb"
-# Library for USB device access
-brew "libusb-compat"
 # Device firmware update based USB programmer for Atmel chips
 brew "dfu-programmer"
+# USB programmer
+brew "dfu-util"
+# Interpreted, interactive, object-oriented programming language
+brew "python"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
 # GIF image/animation creator/editor
@@ -53,6 +63,8 @@ brew "libyaml"
 brew "mas"
 # HTTP(S) server and reverse proxy, and IMAP/POP3 proxy server
 brew "nginx"
+# Port scanning utility for large networks
+brew "nmap"
 # Manage multiple Node.js versions
 brew "nvm"
 # SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
@@ -79,10 +91,16 @@ brew "zsh-syntax-highlighting"
 brew "github/gh/gh"
 # Everything you need to get started with Heroku
 brew "heroku/brew/heroku"
+# GNU Arm Embedded Toolchain - Pre-built GNU toolchain for Arm Cortex-M and Cortex-R processors
+brew "osx-cross/arm/arm-gcc-bin@8", link: true
 # GNU Binutils for the AVR target
 brew "osx-cross/avr/avr-binutils"
 # GNU compiler collection for AVR 8-bit and 32-bit Microcontrollers
 brew "osx-cross/avr/avr-gcc"
+# GNU compiler collection for AVR 8-bit and 32-bit Microcontrollers
+brew "osx-cross/avr/avr-gcc@8"
+# Quantum Mechanical Keyboard (QMK) Firmware
+brew "qmk/qmk/qmk"
 # Stylesheet Preprocessor
 brew "sass/sass/sass"
 cask "1password"
@@ -92,6 +110,7 @@ cask "backblaze"
 cask "balenaetcher"
 cask "discord"
 cask "docker"
+cask "dozer"
 cask "figma"
 cask "firefox"
 cask "font-input"
@@ -122,3 +141,4 @@ mas "HazeOver", id: 430798174
 mas "iA Writer", id: 775737590
 mas "Lungo", id: 1263070803
 mas "Magnet", id: 441258766
+mas "Tweetbot", id: 1384080005
