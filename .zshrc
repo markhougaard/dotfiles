@@ -25,12 +25,12 @@ plugins=(
 # Add autocomplete to Homebrew functions. This must be done before sourcing oh-my-zsh.
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
 fi
 
 ZSH_DISABLE_COMPFIX="true"
-
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 source $ZSH/oh-my-zsh.sh
 
@@ -83,3 +83,6 @@ alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 fpath+=$HOME/.zsh/pure 
 autoload -U promptinit; promptinit 
 prompt pure
+
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
