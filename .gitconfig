@@ -20,11 +20,25 @@
 	process = git-lfs filter-process
 [core]
 	editor = code --wait
+	pager = delta --plus-color="#1a5130" --minus-color="#900e0e" --theme='Dracula'
+[interactive]
+	diffFilter = delta --color-only
 [url "ssh://git@heroku.com/"]
 	insteadOf = https://git.heroku.com/
 [alias]
 	update = !git pull && git submodule update --init --recursive
+	new = !git init && git symbolic-ref HEAD refs/heads/main
 [commit]
 	gpgsign = true
 [gpg]
 	program = gpg
+[merge]
+    tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[pull]
+	rebase = false
