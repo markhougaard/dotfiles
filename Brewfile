@@ -9,6 +9,8 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
+tap "nektos/tap"
+tap "octo-cli/octo"
 tap "osx-cross/arm"
 tap "osx-cross/avr"
 tap "qmk/qmk"
@@ -25,10 +27,14 @@ brew "avrdude"
 brew "openssl@1.1"
 # Command-line interface for SQLite
 brew "sqlite"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9", link: false
 # Official Amazon AWS command-line interface
 brew "awscli"
 # HID-based USB bootloader for AVR microcontrollers
 brew "bootloadhid"
+# Core application library for C
+brew "glib"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
 brew "clang-format"
 # GNU File, Shell, and Text utilities
@@ -37,16 +43,20 @@ brew "coreutils"
 brew "dfu-programmer"
 # USB programmer
 brew "dfu-util"
-# Interpreted, interactive, object-oriented programming language
-brew "python"
+# OpenType text shaping engine
+brew "harfbuzz"
 # Play, record, convert, and stream audio and video
 brew "ffmpeg"
+# GitHub command-line tool
+brew "gh"
 # GIF image/animation creator/editor
 brew "gifsicle"
 # Highest-quality GIF encoder based on pngquant
 brew "gifski"
 # Distributed revision control system
 brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
 # Add GitHub support to git on the command-line
 brew "hub"
 # Tools and libraries to manipulate images in many formats
@@ -67,8 +77,6 @@ brew "nginx"
 brew "nmap"
 # Manage multiple Node.js versions
 brew "nvm"
-# SSL/TLS VPN implementing OSI layer 2 or 3 secure network extension
-brew "openvpn"
 # Command-line tool for the Amazon S3 service
 brew "s3cmd"
 # Internet file retriever
@@ -87,18 +95,20 @@ brew "zsh-completions"
 brew "zsh-history-substring-search"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# GitHub CLI
-brew "github/gh/gh"
+# The Dart SDK
+brew "dart-lang/dart/dart"
 # Everything you need to get started with Heroku
 brew "heroku/brew/heroku"
+# Run GitHub Actions locally
+brew "nektos/tap/act"
+# cli client for GitHub
+brew "octo-cli/octo/octo"
 # GNU Arm Embedded Toolchain - Pre-built GNU toolchain for Arm Cortex-M and Cortex-R processors
 brew "osx-cross/arm/arm-gcc-bin@8", link: true
 # GNU Binutils for the AVR target
 brew "osx-cross/avr/avr-binutils"
 # GNU compiler collection for AVR 8-bit and 32-bit Microcontrollers
-brew "osx-cross/avr/avr-gcc"
-# GNU compiler collection for AVR 8-bit and 32-bit Microcontrollers
-brew "osx-cross/avr/avr-gcc@8"
+brew "osx-cross/avr/avr-gcc@8", link: true
 # Quantum Mechanical Keyboard (QMK) Firmware
 brew "qmk/qmk/qmk"
 # Stylesheet Preprocessor
@@ -136,7 +146,9 @@ cask "transmit"
 cask "tunnelblick"
 cask "visual-studio-code"
 mas "Dato", id: 1470584107
+mas "Deliveries", id: 924726344
 mas "Gifski", id: 1351639930
+mas "Hand Mirror", id: 1502839586
 mas "HazeOver", id: 430798174
 mas "iA Writer", id: 775737590
 mas "Lungo", id: 1263070803
