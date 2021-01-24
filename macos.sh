@@ -125,7 +125,7 @@ defaults write com.apple.terminal StringEncodings -array 4 # Only use UTF-8 in T
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
-defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
+# defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
 defaults write NSGlobalDomain _HIHideMenuBar -bool true # Auto-hide the menu bar
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
@@ -154,8 +154,8 @@ sudo nvram SystemAudioVolume=" " # Disable the sound effects on boot
 sudo pmset -a displaysleep 10 # Sleep the display after 10 minutes
 sudo pmset -b sleep 15 # Set machine sleep to 15 minutes on battery
 sudo pmset -c sleep 0 # Disable machine sleep while charging
-sudo scutil --set ComputerName "marks macbook pro" # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set HostName "marks-macbook-pro" # Set computer name (as done via System Preferences → Sharing)
+# sudo scutil --set ComputerName "marks macbook pro" # Set computer name (as done via System Preferences → Sharing)
+# sudo scutil --set HostName "marks-m1" # Set computer name (as done via System Preferences → Sharing)
 sudo scutil --set LocalHostName $(scutil --get HostName) # Set computer name (as done via System Preferences → Sharing)
 sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 
