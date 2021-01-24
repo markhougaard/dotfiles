@@ -3,7 +3,7 @@
 Run this command:
 
 ```zsh
-curl -Lks https://raw.githubusercontent.com/marksdk/dotfiles/master/install.sh | /bin/bash -x
+curl -Lks https://raw.githubusercontent.com/marksdk/dotfiles/main/install.sh | /bin/bash -x
 ```
 
 This is what it does:
