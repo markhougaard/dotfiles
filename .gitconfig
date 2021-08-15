@@ -20,6 +20,7 @@
 [core]
 	editor = code --wait
 	pager = delta --plus-color="#1a5130" --minus-color="#900e0e" --theme='Dracula'
+	excludesfile = /Users/marks/.gitignore_global
 [interactive]
 	diffFilter = delta --color-only
 [url "ssh://git@heroku.com/"]
@@ -41,3 +42,5 @@
     cmd = code --wait --diff $LOCAL $REMOTE
 [pull]
 	rebase = false
+[init]
+	defaultBranch = main
