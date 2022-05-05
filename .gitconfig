@@ -1,5 +1,5 @@
 [user]
-	name = Mark Hougaard Jensen
+	name = Mark Hougaard
 	email = mark@marks.dk
 	signingkey = 6ED07CAED2F7C701
 [color]
@@ -8,6 +8,7 @@
 	user = marksdk
 [push]
 	default = simple
+	followTags = true
 [filter "media"]
 	required = true
 	clean = git media clean %f
@@ -19,10 +20,10 @@
 	process = git-lfs filter-process
 [core]
 	editor = code --wait
-	pager = delta --plus-color="#1a5130" --minus-color="#900e0e" --theme='Dracula'
+	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = /Users/marks/.gitignore_global
 [interactive]
-	diffFilter = delta --color-only
+	diffFilter = diff-so-fancy --patch
 [url "ssh://git@heroku.com/"]
 	insteadOf = https://git.heroku.com/
 [alias]
@@ -44,3 +45,16 @@
 	rebase = false
 [init]
 	defaultBranch = main
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
