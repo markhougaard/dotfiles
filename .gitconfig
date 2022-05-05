@@ -1,11 +1,11 @@
 [user]
 	name = Mark Hougaard
-	email = mark@marks.dk
-	signingkey = 6ED07CAED2F7C701
+	email = mark@hougaard.email
+	signingkey = D42687F214D07A9F
 [color]
 	ui = true
 [github]
-	user = marksdk
+	user = markhougaard
 [push]
 	default = simple
 	followTags = true
