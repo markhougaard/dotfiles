@@ -9,7 +9,6 @@ osascript -e 'tell application "System Preferences" to quit' # Close any open Sy
 sudo -v # Ask for the administrator password upfront
 
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null & # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist # Enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 64" ~/Library/Preferences/com.apple.finder.plist # Increase grid spacing for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 48" ~/Library/Preferences/com.apple.finder.plist # Increase the size of icons on the desktop and in other icon views
@@ -77,7 +76,7 @@ defaults write com.apple.dock wvous-tr-modifier -int 0 # Top right screen corner
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true # System Preferences > Trackpad > Tap to click (also for login screen)
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool false # System Preferences > Accessibility > Mouse & Trackpad > Trackpad Potions
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true # System Preferences > Accessibility > Mouse & Trackpad > Trackpad Potions
-defaults write com.apple.finder _FXShowPosixPathInTitle -bool true # Display full POSIX path as Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool false # Display full POSIX path as Finder window title
 defaults write com.apple.finder _FXSortFoldersFirst -bool true # Keep folders on top when sorting by name
 defaults write com.apple.finder AppleShowAllFiles -bool true # Finder: show hidden files by default
 defaults write com.apple.finder DisableAllAnimations -bool true # Finder: disable window animations and Get Info animations
@@ -104,7 +103,7 @@ defaults write com.apple.mail NSUserKeyEquivalents -dict-add "\033Message\033Arc
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9" # Command-Enter
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9" # Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false # Disable smart quotes
-defaults write com.apple.PowerChime ChimeOnNoHardware -bool true && killall PowerChime # Disable audible chime when plugging into power
+# defaults write com.apple.PowerChime ChimeOnNoHardware -bool true && killall PowerChime # Disable audible chime when plugging into power. 2020-05-05: No matching processes belonging to you were found
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true # Automatically quit printer app once the print jobs complete
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true # Auto-play videos when opened with QuickTime Player
 defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Next Tab" -string "@~\\U2192" # Command-Alt-Right
@@ -125,7 +124,7 @@ defaults write com.apple.terminal StringEncodings -array 4 # Only use UTF-8 in T
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
-# defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
+sudo defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
 defaults write NSGlobalDomain _HIHideMenuBar -bool true # Auto-hide the menu bar
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
@@ -137,7 +136,7 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling" # Alwa
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 # System Preferences > Trackpad > Tap to click (also for login screen)
 defaults write NSGlobalDomain com.apple.springing.delay -float 0 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true # Enable spring loading for directories
-defaults write NSGlobalDomain InitialKeyRepeat -int 20 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
+defaults write NSGlobalDomain InitialKeyRepeat -int 100 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false # Disable smart quotes as they’re annoying when typing code
@@ -149,15 +148,11 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true # Expa
 defaults write pro.writer.mac NSCloseAlwaysConfirmsChanges -bool false # Enable "auto-save" in iA Writer
 sudo chflags nohidden /Volumes # Show the /Volumes folder
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true # Enable HiDPI display modes (requires restart)
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string $(scutil --get HostName) # Set computer name (as done via System Preferences → Sharing)
 sudo nvram SystemAudioVolume=" " # Disable the sound effects on boot
 sudo pmset -a displaysleep 10 # Sleep the display after 10 minutes
 sudo pmset -b sleep 15 # Set machine sleep to 15 minutes on battery
 sudo pmset -c sleep 0 # Disable machine sleep while charging
-# sudo scutil --set ComputerName "marks macbook pro" # Set computer name (as done via System Preferences → Sharing)
-# sudo scutil --set HostName "marks-m1" # Set computer name (as done via System Preferences → Sharing)
-# sudo scutil --set LocalHostName $(scutil --get HostName) # Set computer name (as done via System Preferences → Sharing)
-sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values
+# sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values. 2022-05-05: Doesn't work with 12.3.1
 
 # Kill affected apps
 for app in "Dock" "Finder"; do
