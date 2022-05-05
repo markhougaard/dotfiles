@@ -156,7 +156,7 @@ sudo pmset -b sleep 15 # Set machine sleep to 15 minutes on battery
 sudo pmset -c sleep 0 # Disable machine sleep while charging
 # sudo scutil --set ComputerName "marks macbook pro" # Set computer name (as done via System Preferences → Sharing)
 # sudo scutil --set HostName "marks-m1" # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set LocalHostName $(scutil --get HostName) # Set computer name (as done via System Preferences → Sharing)
+# sudo scutil --set LocalHostName $(scutil --get HostName) # Set computer name (as done via System Preferences → Sharing)
 sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 
 # Kill affected apps
