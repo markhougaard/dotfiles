@@ -1,5 +1,5 @@
-# Fig pre block. Keep at the top of this file.
-. "$HOME/.fig/shell/zshrc.pre.zsh"
+# CodeWhisperer pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -128,14 +128,30 @@ if [ -f '/Users/marks/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/marks/goo
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/marks/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/marks/google-cloud-sdk/completion.zsh.inc'; fi
 
-# Use a pyenv-defined Python globally. From https://opensource.com/article/19/5/python-3-default-mac
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+# Install z, used to track most used directories: https://github.com/rupa/z
+. /opt/homebrew/etc/profile.d/z.sh
 
-# Fig post block. Keep at the bottom of this file.
-. "$HOME/.fig/shell/zshrc.post.zsh"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+export PATH="${HOME}/.pyenv/shims:${PATH}"
+
+
+[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/anaconda3/bin:$PATH"
+    fi
 fi
-[[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
+unset __conda_setup
+# <<< conda initialize <<<
+
+export GPG_TTY=$(tty)
