@@ -1,6 +1,6 @@
 [user]
 	name = Mark Hougaard
-	email = mark@hougaard.email
+	email = mhj@mapspeople.com
 	signingkey = D42687F214D07A9F
 [color]
 	ui = true
@@ -31,7 +31,7 @@
 	update = !git pull && git submodule update --init --recursive
 	new = !git init && git symbolic-ref HEAD refs/heads/main
 [commit]
-	gpgsign = true
+	# gpgsign = true
 [gpg]
 	program = gpg
 [merge]

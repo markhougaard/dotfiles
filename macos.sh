@@ -154,6 +154,13 @@ sudo pmset -b sleep 15 # Set machine sleep to 15 minutes on battery
 sudo pmset -c sleep 0 # Disable machine sleep while charging
 # sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values. 2022-05-05: Doesn't work with 12.3.1
 
+# Check macOS version
+if [[ $(sw_vers -productVersion) == 15.* ]]; then
+    # macOS 15 specific settings
+    defaults write com.apple.dock mru-spaces -bool true
+    # ... other settings ...
+fi
+
 # Kill affected apps
 for app in "Dock" "Finder"; do
   killall "${app}" > /dev/null 2>&1
