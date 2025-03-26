@@ -1,9 +1,24 @@
-# Setting up a new machine
+# Dotfiles
 
-Run this command:
+This repository contains my personal dotfiles and setup scripts for macOS.
+
+## Quick Start
+
+Run this command to set up a new machine:
 
 ```zsh
-curl -Lks https://raw.githubusercontent.com/marksdk/dotfiles/main/install.sh | /bin/bash -x
+curl -Lks https://raw.githubusercontent.com/marksdk/dotfiles/main/dotfiles/scripts/bootstrap.sh | /bin/bash -x
+```
+
+This will:
+1. Create the necessary directory structure
+2. Set up required symlinks
+3. Clone the dotfiles repository
+4. Prepare your system for the main installation
+
+After the bootstrap completes, run:
+```zsh
+sh $HOME/.dotfiles/scripts/install.sh
 ```
 
 This is what it does:

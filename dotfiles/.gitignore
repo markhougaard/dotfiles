@@ -1,0 +1,15 @@
+# Ignore the .dotfiles directory itself
+.dotfiles/
+
+# macOS system files
+.DS_Store
+
+# Backup files
+.dotfiles-backup/
+
+# Logs
+*.log
+
+# Local configuration files
+.env
+.env.local

@@ -138,7 +138,7 @@ install_iterm2_profile() {
         mkdir -p "$HOME/Library/Application Support/iTerm2/DynamicProfiles"
     fi
 
-    cp "$HOME/.dotfiles/marks.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/" || {
+    cp "$HOME/.dotfiles/configs/marks.json" "$HOME/Library/Application Support/iTerm2/DynamicProfiles/" || {
         error "Failed to copy iTerm2 profile"
         exit 1
     }
@@ -164,8 +164,8 @@ install_zsh_plugins() {
 # Configure macOS settings
 configure_macos() {
     log "Configuring macOS settings..."
-    if [ -f "$HOME/macos.sh" ]; then
-        sh "$HOME/macos.sh" || {
+    if [ -f "$HOME/.dotfiles/scripts/macos.sh" ]; then
+        sh "$HOME/.dotfiles/scripts/macos.sh" || {
             error "Failed to configure macOS settings"
             exit 1
         }

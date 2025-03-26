@@ -4,7 +4,8 @@
 	bare = true
 	ignorecase = true
 	precomposeunicode = true
-[remote "origin"]
-	url = https://github.com/marksdk/dotfiles.git
 [status]
 	showUntrackedFiles = no
+[remote "origin"]
+	url = git@github.com:markhougaard/dotfiles.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
