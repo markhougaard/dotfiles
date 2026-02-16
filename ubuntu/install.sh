@@ -28,7 +28,8 @@ sudo apt install -y \
   wget \
   vim \
   build-essential \
-  gpg
+  gpg \
+  git-lfs
 
 # -----------------------------------------------------------
 # 3. Install oh-my-zsh

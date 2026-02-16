@@ -67,10 +67,6 @@ function ghf {
   fi
 }
 
-# Add colors to Terminal
-export CLICOLOR=1
-export LSCOLORS=GxFxCxDxBxegedabagaced
-
 # Create a new directory and enter it
 function mk() {
   mkdir -p "$@" && cd "$@"
@@ -91,8 +87,5 @@ alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 decode () {
   echo "$1" | base64 -d ; echo
 }
-
-# pyenv
-export PATH="${HOME}/.pyenv/shims:${PATH}"
 
 export GPG_TTY=$(tty)
