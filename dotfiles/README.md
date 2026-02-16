@@ -1,8 +1,26 @@
 # Dotfiles
 
-This repository contains my personal dotfiles and setup scripts for macOS.
+This repository contains my personal dotfiles and setup scripts for macOS and Ubuntu servers.
 
-## Quick Start
+## Ubuntu Server Quick Start
+
+To set up a headless Ubuntu server, clone this repo and run the Ubuntu install script:
+
+```bash
+git clone https://github.com/marksdk/dotfiles.git ~/dotfiles-setup
+bash ~/dotfiles-setup/ubuntu/install.sh
+```
+
+This will:
+1. Install essential packages via apt (zsh, git, curl, vim, build-essential, gpg)
+2. Install oh-my-zsh with plugins (autosuggestions, syntax-highlighting, zsh-z)
+3. Install Pure prompt
+4. Install NVM and diff-so-fancy
+5. Set up the bare-repo dotfiles pattern
+6. Copy Ubuntu-specific shell and git configs into place
+7. Change the default shell to zsh
+
+## macOS Quick Start
 
 Run this command to set up a new machine:
 

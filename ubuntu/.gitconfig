@@ -1,0 +1,47 @@
+[user]
+	name = Mark Hougaard
+	email = mark@hougaard.email
+	signingkey = D42687F214D07A9F
+[color]
+	ui = true
+[github]
+	user = markhougaard
+[push]
+	default = simple
+	followTags = true
+	autoSetupRemote = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	required = true
+	process = git-lfs filter-process
+[core]
+	editor = vim
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	excludesfile = ~/.gitignore_global
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[alias]
+	update = !git pull && git submodule update --init --recursive
+	new = !git init && git symbolic-ref HEAD refs/heads/main
+[commit]
+	# gpgsign = true
+[gpg]
+	program = gpg
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
