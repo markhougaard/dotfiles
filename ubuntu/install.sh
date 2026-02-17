@@ -19,17 +19,21 @@ echo "==> Starting Ubuntu dotfiles setup..."
 # -----------------------------------------------------------
 # 2. Install essential packages via apt
 # -----------------------------------------------------------
-echo "==> Installing essential packages..."
-sudo apt update
-sudo apt install -y \
-  zsh \
-  git \
-  curl \
-  wget \
-  vim \
-  build-essential \
-  gpg \
-  git-lfs
+if [ "${SKIP_APT:-}" != "1" ]; then
+  echo "==> Installing essential packages..."
+  sudo apt update
+  sudo apt install -y \
+    zsh \
+    git \
+    curl \
+    wget \
+    vim \
+    build-essential \
+    gpg \
+    git-lfs
+else
+  echo "==> Skipping apt install (SKIP_APT=1)."
+fi
 
 # -----------------------------------------------------------
 # 3. Install oh-my-zsh
