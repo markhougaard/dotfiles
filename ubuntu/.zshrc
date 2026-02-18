@@ -89,3 +89,75 @@ decode () {
 }
 
 export GPG_TTY=$(tty)
+
+# === Claude Code helpers ===
+
+# Ensure Claude Code is on PATH
+export PATH="$HOME/.local/bin:$HOME/.claude/bin:$PATH"
+
+# cc — Start or reattach to a Claude Code tmux session
+#   Usage:
+#     cc              — opens Claude Code in a persistent tmux session
+#     cc ~/projects   — opens Claude Code in that directory
+cc() {
+    local dir="${1:-.}"
+    local session_name="claude"
+
+    # If we're already inside this tmux session, just run claude
+    if [[ "${TMUX:-}" ]] && tmux display-message -p '#S' 2>/dev/null | grep -q "^${session_name}$"; then
+        cd "$dir" && claude
+        return
+    fi
+
+    # Try to attach to existing session
+    if tmux has-session -t "${session_name}" 2>/dev/null; then
+        echo "Reattaching to existing Claude Code session..."
+        tmux attach-session -t "${session_name}"
+    else
+        # Create new session, cd to dir, and launch claude
+        echo "Starting new Claude Code session..."
+        tmux new-session -d -s "${session_name}" -c "$dir"
+        tmux send-keys -t "${session_name}" "claude" Enter
+        tmux attach-session -t "${session_name}"
+    fi
+}
+
+# ccw — Start Claude Code in a named tmux session (for multiple projects)
+#   Usage:
+#     ccw markdown ~/projects/realtime-markdown-editor
+#     ccw blog ~/projects/blog
+ccw() {
+    local name="${1:?Usage: ccw <name> [directory]}"
+    local dir="${2:-.}"
+
+    if tmux has-session -t "cc-${name}" 2>/dev/null; then
+        tmux attach-session -t "cc-${name}"
+    else
+        tmux new-session -d -s "cc-${name}" -c "$dir"
+        tmux send-keys -t "cc-${name}" "claude" Enter
+        tmux attach-session -t "cc-${name}"
+    fi
+}
+
+# ccls — List all active Claude Code tmux sessions
+ccls() {
+    echo "Active Claude Code sessions:"
+    tmux list-sessions 2>/dev/null | grep -E "^(claude|cc-)" || echo "  (none)"
+}
+
+# cckill — Kill a specific or all Claude Code sessions
+cckill() {
+    local target="${1:-}"
+    if [[ -z "$target" ]]; then
+        echo "Killing all Claude Code sessions..."
+        tmux list-sessions -F '#S' 2>/dev/null | grep -E "^(claude|cc-)" | while read -r s; do
+            tmux kill-session -t "$s"
+            echo "  -> killed $s"
+        done
+    else
+        tmux kill-session -t "cc-${target}" 2>/dev/null || tmux kill-session -t "${target}" 2>/dev/null
+        echo "Killed session: ${target}"
+    fi
+}
+
+# === End Claude Code helpers ===
