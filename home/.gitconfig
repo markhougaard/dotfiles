@@ -31,6 +31,9 @@
 [alias]
 	update = !git pull && git submodule update --init --recursive
 	new = !git init && git symbolic-ref HEAD refs/heads/main
+	# Check out a branch picked from the most recently committed ones. Needs fzf.
+	# Was a shell alias in .zshrc, where the leading ! made it a no-op.
+	cor = !git for-each-ref --sort=-committerdate --format='%(refname:short) (%(committerdate:relative))' refs/heads | fzf --reverse --height 35% --nth 1 | awk '{print $1}' | xargs git checkout
 [commit]
 	# gpgsign = true
 [gpg]

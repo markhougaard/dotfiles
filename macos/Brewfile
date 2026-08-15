@@ -16,6 +16,7 @@ brew "gh"                   # GitHub CLI
 brew "mas"                  # Mac App Store CLI
 brew "trash"                # Safer rm alternative
 brew "diff-so-fancy"        # Better git diff
+brew "fzf"                  # Fuzzy finder, used by the `git cor` alias
 
 # Development Tools
 brew "nvm"                  # Node version manager
