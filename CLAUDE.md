@@ -1,73 +1,80 @@
 # Dotfiles Repository
 
-Personal dotfiles for shell configuration, git settings, and development environment setup.
+Personal dotfiles for shell configuration, git settings, and development environment
+setup. Supports macOS workstations and headless Ubuntu servers from one repo.
 
 ## Overview
 
-This repository was originally built for macOS with GUI apps. It is being adapted to also support headless Ubuntu servers. The goal is to keep the valuable cross-platform shell and git configurations while removing or gating macOS/GUI-specific parts.
+An ordinary git repo cloned to `~/dotfiles`. `link.sh` symlinks files into `$HOME`.
+There is no `dot` alias and no bare repo — plain `git` works in `~/dotfiles`.
 
 ## Repository Structure
 
 ```
-.zshrc              # Primary shell config (oh-my-zsh, plugins, aliases, prompt)
-.zprofile           # Zsh login profile (PATH setup, brew env)
-.bash_profile       # Bash login profile (git aliases, navigation aliases)
-.bashrc             # Bash non-login shell (PATH, nvm, git completion)
-.gitconfig          # Git identity, aliases, diff/merge tools, colors
-.git-prompt.sh      # Git branch/status in shell prompt
-.git-completion.bash # Git tab completion for bash
-.hushlogin          # Suppress login banner
-.gitignore          # Global gitignore patterns
-midt.terminal       # macOS Terminal.app theme (macOS-only)
+home/                   Shared config, linked on every platform
+  .zshrc                oh-my-zsh, plugins, NVM, prompt, shared functions
+  .gitconfig            identity, aliases, colors, diff-so-fancy
+  .gitignore_global     referenced by core.excludesfile
+  .hushlogin
+macos/
+  home/
+    .zprofile           Homebrew shellenv, Obsidian CLI, CodeWhisperer blocks
+    .zshrc.pre.local    CodeWhisperer pre block (loads before oh-my-zsh)
+    .zshrc.local        VS Code EDITOR, CLICOLOR/LSCOLORS, z, notif()
+    .gitconfig.local    VS Code as editor/difftool/mergetool
+  Brewfile              Homebrew packages, casks, Mac App Store apps
+  defaults.sh           ~150 `defaults write` system preferences
+  iterm2-marks.json     iTerm2 dynamic profile
+  midt.terminal         Terminal.app theme
+  install.sh
 ubuntu/
-  .zshrc            # Ubuntu-specific zsh config (vim editor, standard NVM paths)
-  .gitconfig        # Ubuntu-specific git config (vim editor, no VS Code)
-  .zprofile         # Minimal Ubuntu PATH setup
-  install.sh        # Ubuntu server install script (apt, oh-my-zsh, plugins, NVM)
-dotfiles/
-  README.md         # Setup documentation
-  apps/Brewfile     # Homebrew package list (macOS-only)
-  configs/marks.json # iTerm2 profile (macOS-only)
-  scripts/
-    bootstrap.sh    # Initial setup - clones bare repo to $HOME/.dotfiles
-    install.sh      # Full install - brew, oh-my-zsh, plugins, macOS defaults
-    macos.sh        # macOS system preferences (100% macOS-only)
+  home/
+    .zprofile           pyenv shims
+    .zshrc.local        vim EDITOR, Claude Code tmux helpers
+    .gitconfig.local    vim as editor
+    .tmux.conf          Ctrl+A prefix, mouse on, 50k scrollback
+  install.sh            apt, oh-my-zsh, plugins, NVM, dev-user provisioning
+link.sh                 Symlinks home/ then <platform>/home/ into $HOME
 ```
 
 ## Key Patterns
 
-- **Bare git repo pattern**: Uses `git clone --bare` into `$HOME/.dotfiles` with a `dot` alias so the home directory acts as a git working tree without a `.git` folder. The `dot` command replaces `git` for managing these files.
-- **Oh-My-Zsh**: Primary shell framework with plugins: git, zsh-autosuggestions, zsh-syntax-highlighting, zsh-z.
-- **Pure prompt**: Minimal zsh prompt theme installed to `$HOME/.zsh/pure`.
-- **NVM**: Node version management with auto-switching on `.nvmrc` detection.
-- **Conditional sourcing**: Many integrations use `[[ -f ... ]] && source ...` guards.
+- **Plain repo + symlinks**: `link.sh [macos|ubuntu]` links `home/` first, then the
+  platform directory on top. Existing files are moved to
+  `~/.dotfiles-backup/<timestamp>/`. Idempotent; supports `--dry-run`.
+- **Shared base, platform fragments**: two files with the same name can't both be
+  linked, so the shared files load platform ones by name — `home/.zshrc` sources
+  `~/.zshrc.pre.local` (top) and `~/.zshrc.local` (bottom); `home/.gitconfig` ends
+  with `[include] path = ~/.gitconfig.local`. Put anything cross-platform in `home/`
+  and only the divergence in the platform fragment.
+- **Oh-My-Zsh** with plugins: git, zsh-autosuggestions, zsh-syntax-highlighting, zsh-z.
+- **Pure prompt** installed to `$HOME/.zsh/pure`.
+- **NVM**: the default node version goes straight on `PATH`; `nvm.sh` only loads on
+  first actual `nvm` call (~300ms saved per shell). `.nvmrc` auto-switching walks up
+  the tree in pure zsh, so a `cd` into a directory without `.nvmrc` costs nothing.
+  `nvm.sh` is located by probing `$NVM_DIR`, then the Homebrew paths.
+- **Conditional sourcing**: integrations use `[[ -f ... ]] && source ...` guards, so
+  the shared files stay no-ops where a tool isn't installed.
 
-## macOS vs Cross-Platform
+## Editing Conventions
 
-### macOS-only (irrelevant for Ubuntu server)
-- `macos.sh` - entire file is `defaults write` commands
-- `Brewfile` - Homebrew casks, Mac App Store apps, GUI apps
-- `midt.terminal` - Terminal.app theme
-- `configs/marks.json` - iTerm2 profile
-- `bootstrap.sh` / `install.sh` - both have `uname == Darwin` checks
-- CodeWhisperer/Fig integration blocks in shell configs
-- `osascript` calls, `/opt/homebrew/` paths, `brew shellenv`
-- VS Code as git editor/difftool
-
-### Cross-platform (valuable on Ubuntu)
-- Git aliases and configuration (identity, push behavior, colors, diff-so-fancy)
-- Shell aliases (navigation `..`, `...`, git shortcuts `ga`, `gs`, etc.)
-- Oh-My-Zsh + plugins (autosuggestions, syntax-highlighting, zsh-z)
-- Pure prompt theme
-- NVM setup and `.nvmrc` auto-switching
-- Custom functions (`ghf`, `mk`, `decode`)
-- `.hushlogin`, `.git-prompt.sh`, `.git-completion.bash`
-- GPG setup
+- Files in `$HOME` are symlinks into this repo — editing `~/.zshrc` edits
+  `home/.zshrc`. Commit from `~/dotfiles`.
+- Adding a dotfile means dropping it in `home/` or `<platform>/home/` and re-running
+  `./link.sh`. No script changes needed; `link.sh` globs the directory.
+- Keep `macos/defaults.sh` content alone unless asked — it is hand-tuned, and it
+  stays out of the automatic install path because it needs `sudo` and a logout.
+- Prefer guarding a path over hardcoding one. Several dead paths from an old
+  `/Users/marks` home directory were removed; don't reintroduce absolute user paths.
 
 ## Development Notes
 
-- The install scripts currently reject non-macOS systems (`exit 1` on Linux). Any Ubuntu support needs new or modified scripts.
-- `.gitconfig` has hardcoded macOS paths (`/Users/marks/`) and VS Code as editor. For a server, `vim` or `nano` is more appropriate.
-- `.zprofile` is entirely macOS-specific (Homebrew paths, MacPorts, AVR-GCC).
-- `.zshrc` mixes cross-platform config with macOS-specific integrations (Homebrew completions, `/opt/homebrew/` NVM paths, CodeWhisperer, Fig).
-- `.bash_profile` references `brew --prefix` which won't exist on a standard Ubuntu server.
+- `link.sh` and `macos/install.sh` are zsh; `ubuntu/install.sh` is bash. Check with
+  `zsh -n` / `bash -n` after editing.
+- `link.sh` globs `.[!.]*` so it skips `.` and `..`, with the `(N)` qualifier so an
+  empty directory doesn't error under `set -u`. Non-dot files in `home/` are ignored
+  by design.
+- The iTerm2 profile is copied, not symlinked — iTerm2's DynamicProfiles watcher is
+  unreliable with symlinks.
+- `macos/home/.zshrc.local` sources rupa/z, which shadows the `zsh-z` plugin from the
+  shared plugin list. Both provide `z`; the later one wins. Left as-is deliberately.

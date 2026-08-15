@@ -2,9 +2,12 @@
 set -euo pipefail
 
 # Ubuntu server dotfiles install script
-# Usage: bash ubuntu/install.sh
+# Usage:
+#   git clone https://github.com/markhougaard/dotfiles.git ~/dotfiles
+#   bash ~/dotfiles/ubuntu/install.sh
 
-DOTFILES_REPO="https://github.com/marksdk/dotfiles.git"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
 # -----------------------------------------------------------
 # 1. Check we're on Linux
@@ -114,43 +117,13 @@ else
 fi
 
 # -----------------------------------------------------------
-# 8. Set up bare-repo dotfiles
+# 8. Link dotfiles into $HOME
 # -----------------------------------------------------------
-if [ ! -d "$HOME/.dotfiles" ]; then
-  echo "==> Setting up bare-repo dotfiles..."
-  git clone --bare "$DOTFILES_REPO" "$HOME/.dotfiles"
-
-  function dot {
-    /usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
-  }
-
-  # Back up any conflicting files
-  mkdir -p "$HOME/.dotfiles-backup"
-  if ! dot checkout 2>/dev/null; then
-    echo "  -> Backing up pre-existing dotfiles..."
-    dot checkout 2>&1 | grep -E "^\s+" | awk '{print $1}' | xargs -I{} mv "$HOME/{}" "$HOME/.dotfiles-backup/{}"
-    dot checkout
-  fi
-
-  dot config --local status.showUntrackedFiles no
-  echo "  -> Dotfiles checked out successfully."
-else
-  echo "==> Dotfiles bare repo already exists, skipping clone."
-fi
+echo "==> Linking dotfiles..."
+zsh "$REPO_DIR/link.sh" ubuntu
 
 # -----------------------------------------------------------
-# 9. Copy Ubuntu-specific configs into place
-# -----------------------------------------------------------
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-echo "==> Copying Ubuntu-specific configs..."
-cp "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
-cp "$SCRIPT_DIR/.gitconfig" "$HOME/.gitconfig"
-cp "$SCRIPT_DIR/.zprofile" "$HOME/.zprofile"
-cp "$SCRIPT_DIR/.tmux.conf" "$HOME/.tmux.conf"
-
-# -----------------------------------------------------------
-# 10. Change default shell to zsh
+# 9. Change default shell to zsh
 # -----------------------------------------------------------
 if [ "$SHELL" != "$(command -v zsh)" ]; then
   echo "==> Changing default shell to zsh..."
@@ -160,7 +133,7 @@ else
 fi
 
 # -----------------------------------------------------------
-# 11. Install Claude Code for current user
+# 10. Install Claude Code for current user
 # -----------------------------------------------------------
 if [[ ! -f "$HOME/.local/bin/claude" ]] && ! command -v claude &>/dev/null; then
   echo "==> Installing Claude Code..."
@@ -170,7 +143,7 @@ else
 fi
 
 # -----------------------------------------------------------
-# 12. Set up optional dev user with Claude Code + tmux
+# 11. Set up optional dev user with Claude Code + tmux
 # -----------------------------------------------------------
 echo ""
 echo "==> Dev user setup"
@@ -232,17 +205,11 @@ if [[ -n "${DEV_USER:-}" ]]; then
     _install_plugin "${DEV_USER}" "zsh-syntax-highlighting" \
       "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
-    # Copy dotfiles configs for the dev user
-    echo "==> Copying dotfiles for '${DEV_USER}'..."
-    cp "${SCRIPT_DIR}/.zshrc"    "/home/${DEV_USER}/.zshrc"
-    cp "${SCRIPT_DIR}/.gitconfig" "/home/${DEV_USER}/.gitconfig"
-    cp "${SCRIPT_DIR}/.zprofile"  "/home/${DEV_USER}/.zprofile"
-    cp "${SCRIPT_DIR}/.tmux.conf" "/home/${DEV_USER}/.tmux.conf"
-    chown "${DEV_USER}:${DEV_USER}" \
-      "/home/${DEV_USER}/.zshrc" \
-      "/home/${DEV_USER}/.gitconfig" \
-      "/home/${DEV_USER}/.zprofile" \
-      "/home/${DEV_USER}/.tmux.conf"
+    # Link dotfiles for the dev user. The repo only needs to be readable by
+    # them; link.sh creates the symlinks in their own home directory.
+    echo "==> Linking dotfiles for '${DEV_USER}'..."
+    chmod -R a+rX "${REPO_DIR}"
+    su - "${DEV_USER}" -c "zsh '${REPO_DIR}/link.sh' ubuntu"
 
     # Install Claude Code for the dev user
     echo "==> Installing Claude Code for '${DEV_USER}'..."

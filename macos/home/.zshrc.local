@@ -1,0 +1,21 @@
+# macOS-specific zsh config, sourced from the end of the shared ~/.zshrc.
+
+# Use VS Code as "$EDITOR".
+export VISUAL="code -w"
+export EDITOR="$VISUAL"
+
+# Colorised BSD ls.
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# rupa/z. Note: the zsh-z plugin in the shared .zshrc also provides `z`;
+# this is sourced after oh-my-zsh, so this one wins. Drop this line to use zsh-z instead.
+[[ -r /opt/homebrew/etc/profile.d/z.sh ]] && . /opt/homebrew/etc/profile.d/z.sh
+
+# macOS notification from the shell.
+function notif() {
+  osascript -e 'display notification "Done" with title "🎉"'
+}
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"

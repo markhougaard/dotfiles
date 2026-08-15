@@ -1,0 +1,3 @@
+# Ubuntu-specific git config, included from the end of the shared ~/.gitconfig.
+[core]
+	editor = vim

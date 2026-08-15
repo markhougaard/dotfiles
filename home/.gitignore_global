@@ -1,0 +1,10 @@
+# Global gitignore, referenced by core.excludesfile in ~/.gitconfig.
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
