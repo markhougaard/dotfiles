@@ -90,6 +90,27 @@ and `.nvmrc` auto-switching, Pure prompt, plugin list — lives once in `home/`.
 profile, then offers to run `macos/defaults.sh`. Every step is guarded, so it is
 safe to re-run.
 
+### The Brewfile
+
+`macos/Brewfile` lists exactly what is installed on the Mac — CLI formulae, cask
+apps, App Store apps (`mas`) and VS Code extensions — so a new machine needs no
+manual installing. Only top-level packages are listed; Homebrew resolves
+dependencies itself.
+
+```zsh
+brew bundle       --file=macos/Brewfile          # install everything
+brew bundle check --file=macos/Brewfile          # what's missing?
+brew bundle dump --force --file=macos/Brewfile   # regenerate from current state
+```
+
+One step can't be automated: **you must be signed into the App Store** before the
+`mas` entries will install. Apple removed programmatic sign-in and mas 7 can't
+report sign-in status, so `install.sh` pauses and asks you to sign in.
+
+Before using `brew bundle cleanup --force`, read its output. If Homebrew warns
+about a circular dependency, its graph sort is unreliable and it will list
+packages that *are* in the Brewfile.
+
 **`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
 diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
 Code, and optionally provisions a non-root dev user with the same setup.

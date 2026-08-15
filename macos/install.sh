@@ -50,6 +50,13 @@ install_homebrew() {
 }
 
 install_packages() {
+  # The Brewfile's `mas` lines need you signed into the App Store. Apple removed
+  # programmatic sign-in (and mas 7 has no way to report sign-in status), so this
+  # is the one step of a new-Mac setup that can't be automated.
+  log "The Brewfile installs App Store apps, which requires being signed in."
+  print -n "Sign into the App Store now, then press Enter to continue "
+  read -r _
+
   log "Installing packages from macos/Brewfile..."
   brew bundle --file="$REPO/macos/Brewfile"
   success "Packages installed"
