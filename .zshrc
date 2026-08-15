@@ -25,11 +25,11 @@ plugins=(
 )
 
 # Add autocomplete to Homebrew functions. This must be done before sourcing oh-my-zsh.
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
+# Path is hardcoded rather than $(brew --prefix) to avoid a subprocess on every shell start.
+# No compinit here on purpose: oh-my-zsh runs it below, and calling it twice rebuilds
+# the completion dump twice (~270ms).
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  FPATH=/opt/homebrew/share/zsh/site-functions:$FPATH
 fi
 
 ZSH_DISABLE_COMPFIX="true"
@@ -41,32 +41,59 @@ export VISUAL="code -w"
 export EDITOR="$VISUAL"
 
 export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+NVM_SH="/opt/homebrew/opt/nvm/nvm.sh"
 
-# Calling nvm use automatically in a directory with a .nvmrc file. 
-# Place this after nvm initialization! 
-# Source: https://github.com/nvm-sh/nvm#calling-nvm-use-automatically-in-a-directory-with-a-nvmrc-file
+# Put the default node version straight on PATH instead of sourcing nvm.sh (~300ms).
+# node/npm/npx stay immediately available; nvm.sh only loads if you actually call nvm.
+if [[ -r "$NVM_DIR/alias/default" ]]; then
+  _nvm_default="$(<"$NVM_DIR/alias/default")"
+  [[ -d "$NVM_DIR/versions/node/$_nvm_default/bin" ]] &&
+    PATH="$NVM_DIR/versions/node/$_nvm_default/bin:$PATH"
+  unset _nvm_default
+fi
+
+# Real nvm loads on first invocation, then re-dispatches.
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_SH" ] && \. "$NVM_SH"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] &&
+    \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  nvm "$@"
+}
+
+# Auto-switch node when a directory has an .nvmrc.
+# The upward walk is pure zsh, so a cd into a directory without .nvmrc costs nothing
+# and never forces nvm to load.
 autoload -U add-zsh-hook
+_find_nvmrc() {
+  local d="$PWD"
+  while [[ -n "$d" ]]; do
+    [[ -f "$d/.nvmrc" ]] && { print -r -- "$d/.nvmrc"; return 0 }
+    d="${d%/*}"
+  done
+  return 1
+}
 load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
+  local nvmrc_path
+  if ! nvmrc_path="$(_find_nvmrc)"; then
+    # No .nvmrc here. Only revert if nvm is already loaded — don't load it just to revert.
+    if [[ -n "$NVM_BIN" ]] && typeset -f nvm_find_nvmrc >/dev/null; then
+      [[ "$(nvm version)" != "$(nvm version default)" ]] && nvm use default >/dev/null
     fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
+    return
+  fi
+
+  local node_version nvmrc_node_version
+  node_version="$(nvm version)"
+  nvmrc_node_version="$(nvm version "$(<"$nvmrc_path")")"
+
+  if [[ "$nvmrc_node_version" == "N/A" ]]; then
+    nvm install
+  elif [[ "$nvmrc_node_version" != "$node_version" ]]; then
+    nvm use
   fi
 }
 add-zsh-hook chpwd load-nvmrc
-load-nvmrc
 
 # ghf - [G]rep [H]istory [F]or top ten commands and execute one
 # usage:
@@ -94,10 +121,7 @@ function ghf {
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
-# Add autocomplete to Homebrew functions
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
+# (Homebrew site-functions already added to FPATH above, before oh-my-zsh.)
 
 # Create a new directory and enter it
 function mk() {
@@ -156,3 +180,10 @@ unset __conda_setup
 
 export GPG_TTY=$(tty)
 
+# Start SSH agent and add key
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_ed25519
+fi
+
+export PATH="$HOME/.local/bin:$PATH"

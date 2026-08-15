@@ -4,7 +4,7 @@
 # Cruft
 ###
 
-osascript -e 'tell application "System Preferences" to quit' # Close any open System Preferences panes, to prevent them from overriding settings we’re about to change
+osascript -e 'tell application "System Preferences" to quit' # Close any open System Preferences panes, to prevent them from overriding settings we're about to change
 
 sudo -v # Ask for the administrator password upfront
 
@@ -50,19 +50,19 @@ defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true # Enable the 
 defaults write com.apple.dock autohide -bool true # System Preferences > Dock > Automatically hide and show the Dock:
 defaults write com.apple.dock autohide-delay -float 0 # System Preferences > Dock > Automatically hide and show the Dock (delay)
 defaults write com.apple.dock autohide-time-modifier -float 0 # System Preferences > Dock > Automatically hide and show the Dock (duration)
-defaults write com.apple.dock dashboard-in-overlay -bool true # Don’t show Dashboard as a Space
+defaults write com.apple.dock dashboard-in-overlay -bool true # Don't show Dashboard as a Space
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true # Enable spring loading for all Dock items
 defaults write com.apple.dock expose-animation-duration -float 0.1 # Speed up Mission Control animations
-defaults write com.apple.dock expose-group-by-app -bool false # Don’t group windows by application in Mission Control (i.e. use the old Exposé behavior instead)
-defaults write com.apple.dock launchanim -bool false # Don’t animate opening applications from the Dock
+defaults write com.apple.dock expose-group-by-app -bool false # Don't group windows by application in Mission Control (i.e. use the old Exposé behavior instead)
+defaults write com.apple.dock launchanim -bool false # Don't animate opening applications from the Dock
 defaults write com.apple.dock magnification -bool false # System Preferences > Dock > Magnification:
 defaults write com.apple.dock mineffect -string "scale" # System Preferences > Dock > Minimize windows using: Scale effect
 defaults write com.apple.dock minimize-to-application -bool true # System Preferences > Dock > Minimize windows into application icon
 defaults write com.apple.dock mouse-over-hilite-stack -bool true # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mru-spaces -bool true # System Preferences > Mission Control > Automatically rearrange Spaces based on most recent use
-defaults write com.apple.dock persistent-apps -array # Wipe all (default) app icons from the Dock. This is only really useful when setting up a new Mac, or if you don’t use the Dock to launch apps.
+defaults write com.apple.dock persistent-apps -array # Wipe all (default) app icons from the Dock. This is only really useful when setting up a new Mac, or if you don't use the Dock to launch apps.
 defaults write com.apple.dock show-process-indicators -bool true # System Preferences > Dock > Show indicators for open applications
-defaults write com.apple.dock show-recents -bool false # Don’t show recent applications in Dock
+defaults write com.apple.dock show-recents -bool false # Don't show recent applications in Dock
 defaults write com.apple.dock static-only -bool true # Show only open applications in the Dock
 defaults write com.apple.dock tilesize -int 32 # Set the icon size of Dock items to 32 pixels
 defaults write com.apple.dock wvous-bl-corner -int 2 # Bottom left screen corner → Mission Control
@@ -99,8 +99,7 @@ defaults write com.apple.mail DisableSendAnimations -bool true # Disable send an
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes" # Display emails in threaded mode, sorted by date (oldest at the top)
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes" # Display emails in threaded mode, sorted by date (oldest at the top)
 defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date" # Display emails in threaded mode, sorted by date (oldest at the top)
-defaults write com.apple.mail NSUserKeyEquivalents -dict-add "\033Message\033Archive" -string "@e" # Command-E
-defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9" # Command-Enter
+defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Archive" -string "@e" # Command-E for Archive
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9" # Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false # Disable smart quotes
 # defaults write com.apple.PowerChime ChimeOnNoHardware -bool true && killall PowerChime # Disable audible chime when plugging into power. 2020-05-05: No matching processes belonging to you were found
@@ -124,7 +123,7 @@ defaults write com.apple.terminal StringEncodings -array 4 # Only use UTF-8 in T
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
-sudo defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar and elsewhere
+sudo defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar
 defaults write NSGlobalDomain _HIHideMenuBar -bool true # Auto-hide the menu bar
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
@@ -138,8 +137,8 @@ defaults write NSGlobalDomain com.apple.springing.delay -float 0 # Remove the sp
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true # Enable spring loading for directories
 defaults write NSGlobalDomain InitialKeyRepeat -int 100 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
 defaults write NSGlobalDomain KeyRepeat -int 1 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false # Disable smart dashes as they’re annoying when typing code
-defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false # Disable smart quotes as they’re annoying when typing code
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false # Disable smart dashes as they're annoying when typing code
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false # Disable smart quotes as they're annoying when typing code
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true # Expand save panel by default
