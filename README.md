@@ -179,6 +179,68 @@ Four categories come out:
 - **not covered** — the `pmset` and `chflags` lines, listed explicitly so they
   are not silently assumed correct
 
+## GPG signing
+
+Commits and tags are signed by default (`commit.gpgsign`, `tag.gpgSign`).
+
+```
+ed25519/0x55EDECAE6DC1CEEB  [C]  primary, certify only   expires 2028-08-15
+ed25519/0xBDB61A13CC8FE3A0  [S]  signing                 expires 2028-08-15
+cv25519/0xE572ADE16C1A9E42  [E]  encryption              expires 2028-08-15
+
+fingerprint  A641 51B0 236B D041 5645  0AA0 55ED ECAE 6DC1 CEEB
+```
+
+The primary key can only certify. Signing and encryption are separate subkeys,
+so a compromised machine costs a subkey rotation instead of the whole identity.
+`user.signingkey` names the *primary* fingerprint and lets gpg pick the current
+signing subkey, so rotating a subkey needs no config change.
+
+`gnupg/mark-hougaard.asc` is the public key. `gnupg/gpg.conf` and
+`macos/gnupg/gpg-agent.conf` are linked into `~/.gnupg/`. **No secret key
+material is in this repo**, and `.gitignore` refuses it by pattern.
+
+### On a new machine
+
+```zsh
+gpg --import ~/dotfiles/gnupg/mark-hougaard.asc      # public half from here
+gpg --import /path/to/backup/secret-key.asc          # secret half from backup
+gpg --edit-key A64151B0236BD04156450AA055EDECAE6DC1CEEB trust   # set to 5 = ultimate
+```
+
+Without the last step gpg knows the key but doesn't believe it is yours, and
+`git log --show-signature` reports the signature as untrusted.
+
+### Backups
+
+Three things need to exist somewhere that is not this Mac:
+
+1. **The secret key** — `gpg --export-secret-keys --armor <fpr>`. Encrypted, and
+   not in this repo.
+2. **The revocation certificate** — generated automatically at
+   `~/.gnupg/openpgp-revocs.d/<fpr>.rev`. Anyone holding it can permanently
+   revoke the key *without the passphrase*, so it needs the same protection as
+   the key itself, stored separately.
+3. **The passphrase** — in a password manager, not alongside either of the above.
+
+Losing the secret key means starting over, as happened to the key this one
+replaced. Losing the revocation certificate means being unable to disown the key
+if it leaks.
+
+### Renewing before expiry
+
+Expiry is a dead-man's switch, not a security boundary — extend it while the key
+is still valid rather than letting it lapse:
+
+```zsh
+gpg --quick-set-expire A64151B0236BD04156450AA055EDECAE6DC1CEEB 2y
+gpg --quick-set-expire A64151B0236BD04156450AA055EDECAE6DC1CEEB 2y '*'   # subkeys too
+gpg --armor --export A64151B0236BD04156450AA055EDECAE6DC1CEEB > gnupg/mark-hougaard.asc
+gpg --send-keys A64151B0236BD04156450AA055EDECAE6DC1CEEB
+```
+
+Then re-upload to GitHub, and commit the refreshed `.asc`.
+
 ## Notes
 
 ### Keyboard combinations

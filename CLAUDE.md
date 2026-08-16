@@ -17,7 +17,13 @@ home/                   Shared config, linked on every platform
   .gitignore_global     referenced by core.excludesfile
   .tmux.conf            Ctrl+A prefix, mouse on, 50k scrollback
   .hushlogin
+gnupg/
+  gpg.conf              Preferences only - linked via the shared links.conf
+  mark-hougaard.asc     PUBLIC key. Secret keys are never tracked.
+links.conf              Shared links outside the top level of $HOME
 macos/
+  gnupg/
+    gpg-agent.conf      Cache TTLs + pinentry-mac (platform-local path)
   home/
     .zprofile           Homebrew shellenv
     .zshrc.local        VS Code EDITOR, CLICOLOR/LSCOLORS, notif()
@@ -71,6 +77,11 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
   `nvm.sh` is located by probing `$NVM_DIR`, then the Homebrew paths.
 - **Conditional sourcing**: integrations use `[[ -f ... ]] && source ...` guards, so
   the shared files stay no-ops where a tool isn't installed.
+- **GPG**: config is tracked (`gnupg/gpg.conf` shared, `macos/gnupg/gpg-agent.conf`
+  platform-specific for `pinentry-program`), key material never is. The signing key
+  is primary-[C] plus [S]/[E] subkeys; `user.signingkey` names the primary
+  fingerprint so gpg resolves the subkey itself. Never add a `.rev`, a secret key,
+  or anything matching the key patterns in `.gitignore`.
 - **Verifiable state**: `macos/verify.sh` parses `defaults.sh` and reads each key
   back off the system, exiting non-zero on drift. Prefer extending it over
   hand-checking settings; anything it cannot compare it reports rather than
