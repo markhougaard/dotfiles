@@ -54,9 +54,6 @@
       "protocol": "https",
     },
   },
-  "terminal.integrated.env.osx": {
-    "FIG_NEW_SESSION": "1",
-  },
   "vsicons.dontShowNewVersionMessage": true,
   "workbench.colorTheme": "Dracula",
   "workbench.editorAssociations": {

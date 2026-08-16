@@ -2,7 +2,8 @@
 # Platform-specific bits live in ~/.zshrc.pre.local and ~/.zshrc.local,
 # supplied by macos/home/ or ubuntu/home/ via link.sh.
 
-# Anything that must run before oh-my-zsh (e.g. CodeWhisperer's pre block).
+# Hook for anything that must run before oh-my-zsh. No platform supplies one at
+# the moment; drop a .zshrc.pre.local in <platform>/home/ if a tool needs it.
 [[ -f "$HOME/.zshrc.pre.local" ]] && source "$HOME/.zshrc.pre.local"
 
 # Path to your oh-my-zsh installation.

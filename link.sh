@@ -130,6 +130,26 @@ link_manifest() {
   done < "$file"
 }
 
+# Drop links into this repo whose source has since been deleted. Without this,
+# removing a file from home/ leaves a broken symlink in $HOME indefinitely.
+# Only the top level of $HOME is scanned - that is where the home/ convention
+# puts things, and links.conf destinations are by definition still current.
+prune_stale() {
+  local dest target
+  for dest in "$HOME"/.[!.]*(N@); do
+    target="$(readlink "$dest")"
+    [[ "$target" == "$REPO"/* ]] || continue   # not ours to remove
+    [[ -e "$target" ]] && continue             # source still there
+
+    if $DRY_RUN; then
+      print "  would remove stale      ${dest:t}"
+    else
+      rm "$dest"
+      print "  stale   ${dest:t} (source no longer in the repo)"
+    fi
+  done
+}
+
 print "platform: $PLATFORM"
 $DRY_RUN && print "DRY RUN - nothing will change"
 
@@ -140,6 +160,8 @@ link_manifest "$REPO/links.conf"
 print "$PLATFORM ($PLATFORM/home/):"
 link_dir "$REPO/$PLATFORM/home"
 link_manifest "$REPO/$PLATFORM/links.conf"
+
+prune_stale
 
 if (( PROBLEMS )); then
   print -u2 "done, with $PROBLEMS problem(s)."

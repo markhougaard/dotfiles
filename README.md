@@ -32,8 +32,7 @@ home/                   Shared config, linked on every platform
   .hushlogin
 macos/
   home/                   Linked on top of home/ on macOS
-    .zprofile
-    .zshrc.pre.local      CodeWhisperer pre block (must load before oh-my-zsh)
+    .zprofile             Homebrew shellenv
     .zshrc.local          VS Code as EDITOR, BSD ls colors, notif()
     .gitconfig.local      VS Code as editor/difftool/mergetool
   vscode/
@@ -66,7 +65,10 @@ already at a destination is moved to `~/.dotfiles-backup/<timestamp>/` first.
 ./link.sh --dry-run    # show what would change
 ```
 
-It is idempotent — re-running only reports `ok` for links already in place.
+It is idempotent — re-running only reports `ok` for links already in place. It
+also removes links pointing into this repo whose source has since been deleted,
+so dropping a file from `home/` doesn't leave a broken symlink behind. Links
+pointing anywhere else are never touched, broken or not.
 
 ### Adding a dotfile
 
@@ -99,8 +101,10 @@ will show it as needing to be re-linked.
 Files with the same name can't both be linked, so the shared files load the
 platform ones by name rather than being overwritten:
 
-- `home/.zshrc` sources `~/.zshrc.pre.local` at the top (before oh-my-zsh) and
-  `~/.zshrc.local` at the bottom.
+- `home/.zshrc` sources `~/.zshrc.local` at the bottom, and `~/.zshrc.pre.local`
+  at the top for anything that has to load before oh-my-zsh. Both are guarded, so
+  a platform that supplies neither costs nothing — nothing needs the pre hook
+  today, but it stays for the tools that do.
 - `home/.gitconfig` ends with `[include] path = ~/.gitconfig.local`. Git applies
   later values last, so the platform file wins.
 

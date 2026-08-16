@@ -19,8 +19,7 @@ home/                   Shared config, linked on every platform
   .hushlogin
 macos/
   home/
-    .zprofile           Homebrew shellenv, CodeWhisperer blocks
-    .zshrc.pre.local    CodeWhisperer pre block (loads before oh-my-zsh)
+    .zprofile           Homebrew shellenv
     .zshrc.local        VS Code EDITOR, CLICOLOR/LSCOLORS, notif()
     .gitconfig.local    VS Code as editor/difftool/mergetool
   vscode/
@@ -54,9 +53,14 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
   the line is the destination, so paths with spaces need no quoting. A missing source
   or malformed line is reported and `link.sh` exits non-zero, rather than aborting
   half-linked.
+- **Stale-link pruning**: `link.sh` deletes top-level `$HOME` symlinks that point
+  into this repo at a source that no longer exists, so removing a file from `home/`
+  cleans up after itself. It deliberately ignores links pointing elsewhere, broken
+  or not — those aren't ours to remove.
 - **Shared base, platform fragments**: two files with the same name can't both be
   linked, so the shared files load platform ones by name — `home/.zshrc` sources
-  `~/.zshrc.pre.local` (top) and `~/.zshrc.local` (bottom); `home/.gitconfig` ends
+  `~/.zshrc.pre.local` (top, currently unused but kept as a hook for anything that
+  must load before oh-my-zsh) and `~/.zshrc.local` (bottom); `home/.gitconfig` ends
   with `[include] path = ~/.gitconfig.local`. Put anything cross-platform in `home/`
   and only the divergence in the platform fragment.
 - **Oh-My-Zsh** with plugins: git, zsh-autosuggestions, zsh-syntax-highlighting, zsh-z.
