@@ -37,6 +37,7 @@ macos/
     .gitconfig.local      VS Code as editor/difftool/mergetool
   Brewfile
   defaults.sh             ~150 macOS system preferences
+  verify.sh               Checks defaults.sh against the running system
   iterm2-marks.json       iTerm2 dynamic profile
   midt.terminal           Terminal.app theme
   install.sh
@@ -90,6 +91,13 @@ and `.nvmrc` auto-switching, Pure prompt, plugin list — lives once in `home/`.
 profile, then offers to run `macos/defaults.sh`. Every step is guarded, so it is
 safe to re-run.
 
+**`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
+diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
+Code, and optionally provisions a non-root dev user with the same setup.
+
+`macos/defaults.sh` is kept out of the automatic path: it uses `sudo`, clears the
+Dock, and needs a logout to fully apply.
+
 ### The Brewfile
 
 `macos/Brewfile` lists exactly what is installed on the Mac — CLI formulae, cask
@@ -113,12 +121,32 @@ normal. Still read its output before `--force`: it also removes orphaned
 dependencies, and an older installed build can link against one that the current
 formula no longer declares.
 
-**`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
-diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
-Code, and optionally provisions a non-root dev user with the same setup.
+### Verifying macOS settings
 
-`macos/defaults.sh` is kept out of the automatic path: it uses `sudo`, clears the
-Dock, writes `nvram`, and needs a logout to fully apply.
+`macos/defaults.sh` is write-only: running it sets ~150 preferences but tells you
+nothing about what the machine currently looks like. `macos/verify.sh` closes that
+loop by reading every setting back and comparing.
+
+```zsh
+./macos/verify.sh          # report drift only
+./macos/verify.sh --all    # also list settings that match
+./macos/verify.sh --quiet  # no output, just the exit status
+```
+
+Exit status is 0 when nothing has drifted and 1 otherwise, so it works in a
+pre-commit hook or CI step. It handles `-currentHost`, expands `${HOME}`, and
+where a key is written more than once compares only the last write, since that
+is the one that survives.
+
+Four categories come out:
+
+- **drift** — the system value differs from what the script would set
+- **not set** — the script sets it but the system has no value, usually because
+  that app has never been launched
+- **check by hand** — `-dict-add` and `-array` entries, which build structures
+  rather than set a single value
+- **not covered** — the `pmset` and `chflags` lines, listed explicitly so they
+  are not silently assumed correct
 
 ## Notes
 

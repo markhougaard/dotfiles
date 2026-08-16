@@ -24,6 +24,7 @@ macos/
     .gitconfig.local    VS Code as editor/difftool/mergetool
   Brewfile              Homebrew packages, casks, Mac App Store apps
   defaults.sh           ~150 `defaults write` system preferences
+  verify.sh             Reads defaults.sh settings back and reports drift
   iterm2-marks.json     iTerm2 dynamic profile
   midt.terminal         Terminal.app theme
   install.sh
@@ -55,6 +56,10 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME
   `nvm.sh` is located by probing `$NVM_DIR`, then the Homebrew paths.
 - **Conditional sourcing**: integrations use `[[ -f ... ]] && source ...` guards, so
   the shared files stay no-ops where a tool isn't installed.
+- **Verifiable state**: `macos/verify.sh` parses `defaults.sh` and reads each key
+  back off the system, exiting non-zero on drift. Prefer extending it over
+  hand-checking settings; anything it cannot compare it reports rather than
+  skipping silently.
 
 ## Editing Conventions
 

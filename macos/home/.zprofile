@@ -3,8 +3,10 @@
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Obsidian CLI
-export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
+# No Obsidian PATH entry: the obsidian cask links obsidian-cli into
+# /opt/homebrew/bin as `obsidian`, which brew shellenv above already puts on
+# PATH. Adding the app's MacOS directory would also expose the `Obsidian`
+# binary itself, which is not wanted.
 
 # CodeWhisperer post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh"
