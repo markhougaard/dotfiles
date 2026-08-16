@@ -38,6 +38,7 @@ brew "diff-so-fancy"                  # Better git diff
 brew "tmux"                           # Terminal multiplexer
 brew "yt-dlp"                         # Video downloader
 brew "wedow/tools/ticket"             # Minimal ticket tracking in bash
+brew "pinentry-mac"                   # GUI passphrase prompt for gpg-agent
 brew "mas"                            # Mac App Store CLI, needed by the mas lines below
 
 # Media

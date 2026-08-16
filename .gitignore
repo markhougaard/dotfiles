@@ -2,3 +2,16 @@
 *.log
 .env
 .env.local
+
+# Key material must never land in this repo. gnupg/mark-hougaard.asc is an
+# exported PUBLIC key and is tracked on purpose; everything below is not.
+# A revocation certificate is as dangerous as the secret key: anyone holding
+# one can permanently revoke the key without the passphrase.
+*.rev
+*.gpg
+*.pgp
+*secret*.asc
+*private*.asc
+id_rsa
+id_ed25519
+*.pem

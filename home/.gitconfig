@@ -3,7 +3,10 @@
 [user]
 	name = Mark Hougaard
 	email = mark@hougaard.email
-	signingkey = D42687F214D07A9F
+	# Full fingerprint of the PRIMARY key - not a short ID, and not the subkey.
+	# gpg selects the current [S] subkey itself, so rotating that subkey needs
+	# no change here. Public half: gnupg/mark-hougaard.asc
+	signingkey = A64151B0236BD04156450AA055EDECAE6DC1CEEB
 [github]
 	user = markhougaard
 [color]
@@ -35,7 +38,9 @@
 	# Was a shell alias in .zshrc, where the leading ! made it a no-op.
 	cor = !git for-each-ref --sort=-committerdate --format='%(refname:short) (%(committerdate:relative))' refs/heads | fzf --reverse --height 35% --nth 1 | awk '{print $1}' | xargs git checkout
 [commit]
-	# gpgsign = true
+	gpgsign = true
+[tag]
+	gpgSign = true
 [gpg]
 	program = gpg
 [color "diff-highlight"]
