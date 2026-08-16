@@ -10,8 +10,12 @@
 # build may still link against one the current formula no longer declares.
 #
 # Only top-level packages are listed; Homebrew resolves dependencies itself.
-# No taps needed — everything here is in homebrew/core or homebrew/cask.
 # Regenerate the installed-state portion with: brew bundle dump --force
+
+# Third-party taps. Homebrew hides a tap's formulae from `brew leaves` until the
+# tap is trusted, so trust this one or `ticket` will look uninstalled:
+#   brew trust --formula wedow/tools/ticket
+tap "wedow/tools"
 
 # Core Development Tools
 brew "git"                            # Version control
@@ -33,6 +37,7 @@ brew "diff-so-fancy"                  # Better git diff
 brew "tmux"                           # Terminal multiplexer
 brew "z"                              # Jump to frequently used directories
 brew "yt-dlp"                         # Video downloader
+brew "wedow/tools/ticket"             # Minimal ticket tracking in bash
 brew "mas"                            # Mac App Store CLI, needed by the mas lines below
 
 # Media
