@@ -4,9 +4,10 @@
 #   brew bundle check --file=macos/Brewfile    report what's missing
 #   brew bundle cleanup --file=macos/Brewfile  list installed things NOT here
 #
-# Read cleanup's output before ever passing --force: if Homebrew reports a
-# circular dependency, its graph sort is unreliable and it will list packages
-# that ARE in this file.
+# cleanup also lists superseded keg versions (e.g. python@3.12/3.12.9 while
+# 3.12.14 is installed) - that is normal and safe. Read its output before
+# --force anyway: it removes orphaned dependencies too, and an older installed
+# build may still link against one the current formula no longer declares.
 #
 # Only top-level packages are listed; Homebrew resolves dependencies itself.
 # No taps needed — everything here is in homebrew/core or homebrew/cask.

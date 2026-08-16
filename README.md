@@ -107,9 +107,11 @@ One step can't be automated: **you must be signed into the App Store** before th
 `mas` entries will install. Apple removed programmatic sign-in and mas 7 can't
 report sign-in status, so `install.sh` pauses and asks you to sign in.
 
-Before using `brew bundle cleanup --force`, read its output. If Homebrew warns
-about a circular dependency, its graph sort is unreliable and it will list
-packages that *are* in the Brewfile.
+`brew bundle cleanup` reports superseded keg versions alongside genuinely unused
+packages — seeing `python@3.12/3.12.9` listed while `3.12.14` is installed is
+normal. Still read its output before `--force`: it also removes orphaned
+dependencies, and an older installed build can link against one that the current
+formula no longer declares.
 
 **`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
 diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
