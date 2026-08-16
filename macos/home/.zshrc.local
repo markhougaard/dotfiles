@@ -8,9 +8,9 @@ export EDITOR="$VISUAL"
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
-# rupa/z. Note: the zsh-z plugin in the shared .zshrc also provides `z`;
-# this is sourced after oh-my-zsh, so this one wins. Drop this line to use zsh-z instead.
-[[ -r /opt/homebrew/etc/profile.d/z.sh ]] && . /opt/homebrew/etc/profile.d/z.sh
+# No rupa/z here. The zsh-z plugin in the shared .zshrc provides `z` on both
+# platforms and reads the same ~/.z datafile, so one implementation covers both
+# and the jump history carries over.
 
 # macOS notification from the shell.
 function notif() {

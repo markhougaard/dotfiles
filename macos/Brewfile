@@ -36,7 +36,6 @@ brew "wget"                           # File downloader
 brew "trash"                          # Safer rm alternative
 brew "diff-so-fancy"                  # Better git diff
 brew "tmux"                           # Terminal multiplexer
-brew "z"                              # Jump to frequently used directories
 brew "yt-dlp"                         # Video downloader
 brew "wedow/tools/ticket"             # Minimal ticket tracking in bash
 brew "mas"                            # Mac App Store CLI, needed by the mas lines below

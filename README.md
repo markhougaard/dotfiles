@@ -28,25 +28,28 @@ home/                   Shared config, linked on every platform
   .zshrc                  sources ~/.zshrc.pre.local and ~/.zshrc.local
   .gitconfig              includes ~/.gitconfig.local
   .gitignore_global
+  .tmux.conf
   .hushlogin
 macos/
   home/                   Linked on top of home/ on macOS
     .zprofile
     .zshrc.pre.local      CodeWhisperer pre block (must load before oh-my-zsh)
-    .zshrc.local          VS Code as EDITOR, BSD ls colors, z, notif()
+    .zshrc.local          VS Code as EDITOR, BSD ls colors, notif()
     .gitconfig.local      VS Code as editor/difftool/mergetool
+  vscode/
+    settings.json         Editor settings, linked via links.conf
+    keybindings.json      Custom key bindings
+  links.conf              Targets that aren't at the top level of $HOME
   Brewfile
   defaults.sh             ~150 macOS system preferences
   verify.sh               Checks defaults.sh against the running system
   iterm2-marks.json       iTerm2 dynamic profile
-  midt.terminal           Terminal.app theme
   install.sh
 ubuntu/
   home/                   Linked on top of home/ on Ubuntu
     .zprofile
     .zshrc.local          vim as EDITOR, Claude Code tmux helpers (cc/ccw/ccls/cckill)
     .gitconfig.local      vim as editor
-    .tmux.conf
   install.sh
 link.sh                 Symlinks home/ then <platform>/home/ into $HOME
 ```
@@ -70,6 +73,26 @@ It is idempotent — re-running only reports `ok` for links already in place.
 Drop it in `home/` (shared) or `<platform>/home/` (platform-specific) and re-run
 `./link.sh`. Because the files in `$HOME` are symlinks into this repo, editing
 `~/.zshrc` edits `home/.zshrc` directly; commit from `~/dotfiles` as usual.
+
+### Files that don't live at the top level of $HOME
+
+The `home/` convention can only produce `~/.something`. For anything deeper — VS
+Code keeps its config under `~/Library/Application Support/` — add a line to the
+platform's `links.conf`:
+
+```
+vscode/settings.json      ~/Library/Application Support/Code/User/settings.json
+```
+
+The first field is the source, relative to the `links.conf`; everything after it
+is the destination, so paths containing spaces need no quoting. `~` and `$HOME`
+are expanded, and missing directories are created. A source that doesn't exist,
+or a line with no destination, is reported and makes `link.sh` exit non-zero
+instead of silently doing nothing.
+
+VS Code writes through the symlink, so changing a setting in the UI updates the
+repo. If an update ever replaces the link with a plain file, `./link.sh --dry-run`
+will show it as needing to be re-linked.
 
 ### Shared vs platform-specific
 
@@ -104,6 +127,10 @@ Dock, and needs a logout to fully apply.
 apps, App Store apps (`mas`) and VS Code extensions — so a new machine needs no
 manual installing. Only top-level packages are listed; Homebrew resolves
 dependencies itself.
+
+The Brewfile covers VS Code *extensions*; the editor's own `settings.json` and
+`keybindings.json` are symlinked separately through `macos/links.conf`, so a new
+machine gets the configuration as well as the plugins.
 
 ```zsh
 brew bundle       --file=macos/Brewfile          # install everything

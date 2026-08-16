@@ -145,7 +145,5 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 
-[[ -d "$HOME/.pyenv/shims" ]] && export PATH="$HOME/.pyenv/shims:$PATH"
-
 # Platform-specific config.
 [[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

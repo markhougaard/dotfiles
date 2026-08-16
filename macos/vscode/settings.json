@@ -1,0 +1,74 @@
+{
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features",
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.formatOnType": true,
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter",
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.accessibilitySupport": "off",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit",
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.minimap.enabled": false,
+  "emmet.includeLanguages": {
+    "postcss": "css",
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.format.enable": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "gitlens.blame.format": "${agoOrDate|14-}",
+  // "gitlens.remotes" is deliberately absent: it names an internal company
+  // GitLab host and this repo is public. Add it back on a work machine with
+  //   "gitlens.remotes": [{ "domain": "<host>", "type": "GitLab" }]
+  "liveServer.settings.donotShowInfoMsg": true,
+  "npm.keybindingsChangedWarningShown": true,
+  "redhat.telemetry.enabled": false,
+  "remote.portsAttributes": {
+    "443": {
+      "protocol": "https",
+    },
+    "8443": {
+      "protocol": "https",
+    },
+  },
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1",
+  },
+  "vsicons.dontShowNewVersionMessage": true,
+  "workbench.colorTheme": "Dracula",
+  "workbench.editorAssociations": {
+    "*.csv": "gc-excelviewer-csv-editor",
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.startupEditor": "none",
+  "files.associations": {
+    "*.mdx": "markdown",
+    "*.yml": "yaml",
+  },
+  "git.openRepositoryInParentFolders": "always",
+  "gitlens.views.branches.branches.layout": "list",
+  "claudeCode.preferredLocation": "panel",
+}

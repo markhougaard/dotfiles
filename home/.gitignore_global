@@ -8,3 +8,8 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+
+# Claude Code's per-project local settings, never meant to be committed.
+# This rule used to live in ~/.config/git/ignore, which git reads in addition
+# to this file - a second global-ignore source no other machine would have had.
+**/.claude/settings.local.json

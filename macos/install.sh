@@ -117,7 +117,7 @@ install_iterm2_profile() {
 configure_macos() {
   print ""
   log "macos/defaults.sh sets ~150 system preferences. It uses sudo, clears the"
-  log "Dock, changes nvram, and needs a logout to fully apply."
+  log "Dock, and needs a logout to fully apply."
   print -n "Run it now? [y/N] "
   local reply
   read -r reply
