@@ -32,7 +32,7 @@ defaults write -globalDomain AppleScrollerPagingBehavior -bool true # System Pre
 defaults write -globalDomain NSTableViewDefaultSizeMode -int 2 # System Preferences > General > Sidebar icon size: Medium
 defaults write com.apple.ActivityMonitor IconType -int 5 # Visualize CPU usage in the Activity Monitor Dock icon
 defaults write com.apple.ActivityMonitor OpenMainWindow -bool true # Show the main window when launching Activity Monitor
-defaults write com.apple.ActivityMonitor ShowCategory -int 0 # Show all processes in Activity Monitor
+defaults write com.apple.ActivityMonitor ShowCategory -int 100 # Show all processes in Activity Monitor (categories are 100-107; 0 is not valid)
 defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage" # Sort Activity Monitor results by CPU usage
 defaults write com.apple.ActivityMonitor SortDirection -int 0 # Sort Activity Monitor results by CPU usage
 defaults write com.apple.AppleMultitouchTrackpad Dragging -bool false # System Preferences > Accessibility > Mouse & Trackpad > Trackpad Potions
@@ -42,7 +42,6 @@ defaults write com.apple.appstore WebKitDeveloperExtras -bool true # Enable the 
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.commerce AutoUpdate -bool true # Turn on app auto-update
 defaults write com.apple.commerce AutoUpdateRestartRequired -bool true # Allow the App Store to reboot machine on macOS updates
-defaults write com.apple.dashboard mcx-disabled -bool true # Disable Dashboard
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true # Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true # Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.DiskUtility advanced-image-options -bool true # Enable the debug menu in Disk Utility
@@ -50,7 +49,6 @@ defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true # Enable the 
 defaults write com.apple.dock autohide -bool true # System Preferences > Dock > Automatically hide and show the Dock:
 defaults write com.apple.dock autohide-delay -float 0 # System Preferences > Dock > Automatically hide and show the Dock (delay)
 defaults write com.apple.dock autohide-time-modifier -float 0 # System Preferences > Dock > Automatically hide and show the Dock (duration)
-defaults write com.apple.dock dashboard-in-overlay -bool true # Don't show Dashboard as a Space
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true # Enable spring loading for all Dock items
 defaults write com.apple.dock expose-animation-duration -float 0.1 # Speed up Mission Control animations
 defaults write com.apple.dock expose-group-by-app -bool false # Don't group windows by application in Mission Control (i.e. use the old Exposé behavior instead)
@@ -65,9 +63,7 @@ defaults write com.apple.dock show-process-indicators -bool true # System Prefer
 defaults write com.apple.dock show-recents -bool false # Don't show recent applications in Dock
 defaults write com.apple.dock static-only -bool true # Show only open applications in the Dock
 defaults write com.apple.dock tilesize -int 32 # Set the icon size of Dock items to 32 pixels
-defaults write com.apple.dock wvous-bl-corner -int 2 # Bottom left screen corner → Mission Control
 defaults write com.apple.dock wvous-bl-corner -int 4 # Bottom left screen corner → Desktop
-defaults write com.apple.dock wvous-bl-modifier -int 0 # Bottom left screen corner → Mission Control
 defaults write com.apple.dock wvous-bl-modifier -int 13 # Bottom left screen corner → Desktop
 defaults write com.apple.dock wvous-tl-corner -int 3 # Top left screen corner → Show application windows
 defaults write com.apple.dock wvous-tl-modifier -int 0 # Top left screen corner → Show application windows
@@ -108,7 +104,7 @@ defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true # Auto-pl
 defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Next Tab" -string "@~\\U2192" # Command-Alt-Right
 defaults write com.apple.Safari NSUserKeyEquivalents -dict-add "\033Window\033Show Previous Tab" -string "@~\\U2190" # Command-Alt-Left
 defaults write com.apple.screencapture disable-shadow -bool true # Disable shadow in screenshots
-defaults write com.apple.screencapture location -string "${HOME}/Documents/Screenshots" # Save screenshots to the desktop
+defaults write com.apple.screencapture location -string "${HOME}/Documents/Screenshots" # Save screenshots to ~/Documents/Screenshots
 defaults write com.apple.screencapture type -string "png" # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screensaver askForPassword -int 1 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPasswordDelay -int 0 # Require password immediately after sleep or screen saver begins
@@ -123,10 +119,10 @@ defaults write com.apple.terminal StringEncodings -array 4 # Only use UTF-8 in T
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit RichText -int 0 # Use plain text mode for new TextEdit documents
-sudo defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar
+defaults write com.apple.universalaccess reduceTransparency -bool true # Disable transparency in the menu bar (no sudo: with it, this writes to root's prefs)
 defaults write NSGlobalDomain _HIHideMenuBar -bool true # Auto-hide the menu bar
 defaults write NSGlobalDomain AppleLanguages -array "en" "da" # Set language and text formats
-defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR" # Set language and text formats
+defaults write NSGlobalDomain AppleLocale -string "en_001@currency=eur;rg=gbzzzz" # Set language and text formats
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters" # Set language and text formats
 defaults write NSGlobalDomain AppleMetricUnits -bool true # Set language and text formats
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false # Disable press-and-hold for keys in favor of key repeat
@@ -135,8 +131,8 @@ defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling" # Alwa
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1 # System Preferences > Trackpad > Tap to click (also for login screen)
 defaults write NSGlobalDomain com.apple.springing.delay -float 0 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.enabled -bool true # Enable spring loading for directories
-defaults write NSGlobalDomain InitialKeyRepeat -int 100 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 1 # System Preferences > Keyboard > Set a blazingly fast keyboard repeat rate
+defaults write NSGlobalDomain InitialKeyRepeat -int 25 # System Preferences > Keyboard > Delay until repeat (lower is faster)
+defaults write NSGlobalDomain KeyRepeat -int 2 # System Preferences > Keyboard > Key repeat rate (lower is faster)
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false # Disable smart dashes as they're annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false # Disable smart quotes as they're annoying when typing code
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false # Save to disk (not to iCloud) by default
@@ -147,18 +143,10 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true # Expa
 defaults write pro.writer.mac NSCloseAlwaysConfirmsChanges -bool false # Enable "auto-save" in iA Writer
 sudo chflags nohidden /Volumes # Show the /Volumes folder
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true # Enable HiDPI display modes (requires restart)
-sudo nvram SystemAudioVolume=" " # Disable the sound effects on boot
 sudo pmset -a displaysleep 10 # Sleep the display after 10 minutes
 sudo pmset -b sleep 15 # Set machine sleep to 15 minutes on battery
 sudo pmset -c sleep 0 # Disable machine sleep while charging
 # sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null # Set the timezone; see `sudo systemsetup -listtimezones` for other values. 2022-05-05: Doesn't work with 12.3.1
-
-# Check macOS version
-if [[ $(sw_vers -productVersion) == 15.* ]]; then
-    # macOS 15 specific settings
-    defaults write com.apple.dock mru-spaces -bool true
-    # ... other settings ...
-fi
 
 # Kill affected apps
 for app in "Dock" "Finder"; do

@@ -20,6 +20,7 @@ tap "wedow/tools"
 # Core Development Tools
 brew "git"                            # Version control
 brew "gh"                             # GitHub CLI
+brew "gnupg"                          # gpg, for the signingkey in home/.gitconfig
 brew "node"                           # JavaScript runtime
 brew "nvm"                            # Node version manager
 brew "python@3.11"                    # Python runtime
