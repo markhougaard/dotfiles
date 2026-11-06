@@ -80,8 +80,7 @@ prompt pure
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
-# Bare-repo dotfiles management
-alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# Dotfiles: ~/dotfiles is a normal clone; these files are symlinks into ~/dotfiles/ubuntu.
 
 # Decode base64 strings
 decode () {
@@ -89,3 +88,39 @@ decode () {
 }
 
 export GPG_TTY=$(tty)
+
+
+# Claude Code tmux helpers
+# cc [dir]  — start or reattach to the main Claude Code session
+cc() {
+    local dir="${1:-$PWD}"
+    if tmux has-session -t claude 2>/dev/null; then
+        tmux attach-session -t claude
+    else
+        tmux new-session -s claude -c "$dir" "claude"
+    fi
+}
+
+# ccw name [dir]  — named session for a specific project
+ccw() {
+    local name="${1:?usage: ccw <name> [dir]}"
+    local dir="${2:-$PWD}"
+    if tmux has-session -t "$name" 2>/dev/null; then
+        tmux attach-session -t "$name"
+    else
+        tmux new-session -s "$name" -c "$dir" "claude"
+    fi
+}
+
+# ccls  — list active tmux sessions
+ccls() {
+    tmux list-sessions 2>/dev/null || echo "No tmux sessions running"
+}
+
+# cckill [name]  — kill a session (default: claude)
+cckill() {
+    local name="${1:-claude}"
+    tmux kill-session -t "$name" 2>/dev/null && echo "Killed session: $name" || echo "Session not found: $name"
+}
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"

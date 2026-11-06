@@ -2,9 +2,13 @@
 set -euo pipefail
 
 # Ubuntu server dotfiles install script
-# Usage: bash ubuntu/install.sh
-
-DOTFILES_REPO="https://github.com/marksdk/dotfiles.git"
+# Usage: git clone https://github.com/markhougaard/dotfiles.git ~/dotfiles
+#        bash ~/dotfiles/ubuntu/install.sh        (SKIP_APT=1 to skip apt)
+#
+# On Ubuntu, ~/dotfiles is a normal clone and the files in ubuntu/ are
+# SYMLINKED into $HOME, so editing ~/.zshrc edits the repo: commit from
+# ~/dotfiles. (The bare-repo pattern is macOS-only: it would check the Mac
+# files out over the server ones.)
 
 # -----------------------------------------------------------
 # 1. Check we're on Linux
@@ -113,39 +117,34 @@ else
 fi
 
 # -----------------------------------------------------------
-# 8. Set up bare-repo dotfiles
-# -----------------------------------------------------------
-if [ ! -d "$HOME/.dotfiles" ]; then
-  echo "==> Setting up bare-repo dotfiles..."
-  git clone --bare "$DOTFILES_REPO" "$HOME/.dotfiles"
-
-  function dot {
-    /usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
-  }
-
-  # Back up any conflicting files
-  mkdir -p "$HOME/.dotfiles-backup"
-  if ! dot checkout 2>/dev/null; then
-    echo "  -> Backing up pre-existing dotfiles..."
-    dot checkout 2>&1 | grep -E "^\s+" | awk '{print $1}' | xargs -I{} mv "$HOME/{}" "$HOME/.dotfiles-backup/{}"
-    dot checkout
-  fi
-
-  dot config --local status.showUntrackedFiles no
-  echo "  -> Dotfiles checked out successfully."
-else
-  echo "==> Dotfiles bare repo already exists, skipping clone."
-fi
-
-# -----------------------------------------------------------
-# 9. Copy Ubuntu-specific configs into place
+# 8. Symlink Ubuntu configs into $HOME
 # -----------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
-echo "==> Copying Ubuntu-specific configs..."
-cp "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
-cp "$SCRIPT_DIR/.gitconfig" "$HOME/.gitconfig"
-cp "$SCRIPT_DIR/.zprofile" "$HOME/.zprofile"
+echo "==> Linking Ubuntu configs from $SCRIPT_DIR..."
+for f in .zshrc .zprofile .gitconfig .tmux.conf; do
+  src="$SCRIPT_DIR/$f"; dst="$HOME/$f"
+  if [ "$(readlink -f "$dst" 2>/dev/null)" = "$src" ]; then
+    echo "  -> $f already linked"
+    continue
+  fi
+  if [ -e "$dst" ] || [ -L "$dst" ]; then
+    mkdir -p "$BACKUP"
+    mv "$dst" "$BACKUP/$f"
+    echo "  -> backed up existing $f to $BACKUP/"
+  fi
+  ln -s "$src" "$dst"
+  echo "  -> linked $f"
+done
+
+# -----------------------------------------------------------
+# 9. Retire the old bare repo, if an earlier version made one
+# -----------------------------------------------------------
+if [ -d "$HOME/.dotfiles" ] && [ "$(git --git-dir="$HOME/.dotfiles" rev-parse --is-bare-repository 2>/dev/null)" = "true" ]; then
+  echo "==> Found old bare repo at ~/.dotfiles (no longer used on Ubuntu)."
+  echo "    Remove it once you're happy: rm -rf ~/.dotfiles"
+fi
 
 # -----------------------------------------------------------
 # 10. Change default shell to zsh
@@ -163,4 +162,5 @@ fi
 echo ""
 echo "==> Setup complete!"
 echo "    - Log out and back in (or run 'zsh') to start using your new shell."
-echo "    - Your old dotfiles (if any) were backed up to ~/.dotfiles-backup/"
+echo "    - Replaced files (if any) were backed up under ~/.dotfiles-backup/"
+echo "    - Edit configs in place, then commit from ~/dotfiles."

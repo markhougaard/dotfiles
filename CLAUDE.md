@@ -23,7 +23,8 @@ ubuntu/
   .zshrc            # Ubuntu-specific zsh config (vim editor, standard NVM paths)
   .gitconfig        # Ubuntu-specific git config (vim editor, no VS Code)
   .zprofile         # Minimal Ubuntu PATH setup
-  install.sh        # Ubuntu server install script (apt, oh-my-zsh, plugins, NVM)
+  .tmux.conf        # tmux config (Ctrl+A prefix, mouse, Claude Code helpers pair with cc/ccw in .zshrc)
+  install.sh        # Ubuntu server install script (apt, oh-my-zsh, plugins, NVM, symlinks)
 dotfiles/
   README.md         # Setup documentation
   apps/Brewfile     # Homebrew package list (macOS-only)
@@ -36,7 +37,9 @@ dotfiles/
 
 ## Key Patterns
 
-- **Bare git repo pattern**: Uses `git clone --bare` into `$HOME/.dotfiles` with a `dot` alias so the home directory acts as a git working tree without a `.git` folder. The `dot` command replaces `git` for managing these files.
+- **Bare git repo pattern (macOS only)**: Uses `git clone --bare` into `$HOME/.dotfiles` with a `dot` alias so the home directory acts as a git working tree without a `.git` folder. The `dot` command replaces `git` for managing these files.
+- **Ubuntu: clone + symlinks**: servers use a normal clone at `~/dotfiles`; `ubuntu/install.sh` symlinks `ubuntu/{.zshrc,.zprofile,.gitconfig,.tmux.conf}` into `$HOME`. Edit in place and commit from `~/dotfiles`. Don't use the bare repo on Ubuntu: it checks the macOS top-level files out over the server's.
+- **Don't commit `.dotfiles/`**: it is the bare repo's own git directory. It was committed by accident once; remove it from the Mac only, with `dot rm -r --cached .dotfiles` (a plain `rm` from any checkout would delete the Mac's repo when it pulls).
 - **Oh-My-Zsh**: Primary shell framework with plugins: git, zsh-autosuggestions, zsh-syntax-highlighting, zsh-z.
 - **Pure prompt**: Minimal zsh prompt theme installed to `$HOME/.zsh/pure`.
 - **NVM**: Node version management with auto-switching on `.nvmrc` detection.
