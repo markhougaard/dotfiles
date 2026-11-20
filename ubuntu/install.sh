@@ -17,6 +17,16 @@ if [ "$(uname)" != "Linux" ]; then
   exit 1
 fi
 
+# Refuse `sudo ./install.sh`. Under sudo, $HOME is /root, so everything below
+# (oh-my-zsh, NVM, links, chsh) lands on root instead of the invoking user.
+# The script calls sudo itself where it needs it. Logging in as root directly
+# (no SUDO_USER) is still allowed: that's the dev-user provisioning path.
+if [[ "$(id -u)" -eq 0 && -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
+  echo "Error: don't run this script with sudo."
+  echo "Run it as ${SUDO_USER}:  bash ${SCRIPT_DIR}/install.sh"
+  exit 1
+fi
+
 echo "==> Starting Ubuntu dotfiles setup..."
 
 # -----------------------------------------------------------
@@ -99,19 +109,18 @@ fi
 # -----------------------------------------------------------
 # 7. Install diff-so-fancy
 # -----------------------------------------------------------
+# Not packaged in Ubuntu's apt repos. It's a Perl script (Perl ships with
+# Ubuntu), so clone it and link it into ~/.local/bin. No Node and no root:
+# `npm install -g` fails without sudo whenever an apt-installed npm comes
+# first on PATH. The script finds its lib/ through the symlink (FindBin::RealBin).
 if ! command -v diff-so-fancy &>/dev/null; then
   echo "==> Installing diff-so-fancy..."
-  # Load NVM so we can use npm
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-  if command -v npm &>/dev/null; then
-    npm install -g diff-so-fancy
-  else
-    echo "  -> Installing Node LTS first..."
-    nvm install --lts
-    npm install -g diff-so-fancy
+  DSF_DIR="$HOME/.local/share/diff-so-fancy"
+  if [ ! -d "$DSF_DIR" ]; then
+    git clone --depth 1 https://github.com/so-fancy/diff-so-fancy.git "$DSF_DIR"
   fi
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$DSF_DIR/diff-so-fancy" "$HOME/.local/bin/diff-so-fancy"
 else
   echo "==> diff-so-fancy already installed, skipping."
 fi
@@ -125,9 +134,15 @@ zsh "$REPO_DIR/link.sh" ubuntu
 # -----------------------------------------------------------
 # 9. Change default shell to zsh
 # -----------------------------------------------------------
-if [ "$SHELL" != "$(command -v zsh)" ]; then
+# Compare the login shell in passwd, not $SHELL: $SHELL is only the shell of
+# the current session. Use `sudo chsh <user>`, because a plain chsh asks for
+# the user's password, and cloud-init users often have a locked password and
+# passwordless sudo.
+ZSH_PATH="$(command -v zsh)"
+LOGIN_SHELL="$(getent passwd "$(id -un)" | cut -d: -f7)"
+if [ "$LOGIN_SHELL" != "$ZSH_PATH" ]; then
   echo "==> Changing default shell to zsh..."
-  chsh -s "$(command -v zsh)"
+  sudo chsh -s "$ZSH_PATH" "$(id -un)"
 else
   echo "==> Default shell is already zsh."
 fi

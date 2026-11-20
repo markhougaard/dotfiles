@@ -120,7 +120,9 @@ safe to re-run.
 
 **`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
 diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
-Code, and optionally provisions a non-root dev user with the same setup.
+Code, and optionally provisions a non-root dev user with the same setup. Run it as
+the user you're setting up, never with `sudo` (it refuses): it calls `sudo` itself
+where it needs to, and under `sudo` everything would land in `/root`.
 
 `macos/defaults.sh` is kept out of the automatic path: it uses `sudo`, clears the
 Dock, and needs a logout to fully apply.
