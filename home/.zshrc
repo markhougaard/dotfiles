@@ -138,10 +138,16 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 
 export GPG_TTY=$(tty)
 
-# Start SSH agent and add key
+# SSH agent. Prefer systemd's per-user agent (Ubuntu: ssh-agent.socket), so
+# logins share one agent instead of each starting its own that never exits.
+# macOS sets SSH_AUTH_SOCK itself, so this block only runs as a fallback there.
 if [ -z "$SSH_AUTH_SOCK" ] ; then
-  eval "$(ssh-agent -s)"
-  [ -f "$HOME/.ssh/id_ed25519" ] && ssh-add "$HOME/.ssh/id_ed25519"
+  if [ -S "${XDG_RUNTIME_DIR:-/nonexistent}/openssh_agent" ] ; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/openssh_agent"
+  else
+    eval "$(ssh-agent -s)" >/dev/null
+  fi
+  [ -f "$HOME/.ssh/id_ed25519" ] && ! ssh-add -l >/dev/null 2>&1 && ssh-add "$HOME/.ssh/id_ed25519"
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
