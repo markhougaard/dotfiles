@@ -49,6 +49,11 @@ BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 # turned into a non-zero exit at the end.
 typeset -i PROBLEMS=0
 
+# Directories that must be private (mode 700). gpg refuses to trust a homedir
+# others can write to, and mkdir -p would create it with the default umask.
+PRIVATE_DIRS=("$HOME/.gnupg")
+zmodload -F zsh/stat b:zstat
+
 # link_one <source> <destination> <label>
 # The one place that actually touches the filesystem, so backup and dry-run
 # behaviour stays identical for both the home/ convention and links.conf.
@@ -85,7 +90,11 @@ link_one() {
     print "  backup  $label -> ${BACKUP/#$HOME/~}"
   fi
 
-  mkdir -p "${dest:h}"
+  if (( ${PRIVATE_DIRS[(Ie)${dest:h}]} )); then
+    (umask 077 && mkdir -p "${dest:h}")
+  else
+    mkdir -p "${dest:h}"
+  fi
   ln -s "$src" "$dest"
   print "  link    $label"
 }
@@ -130,6 +139,23 @@ link_manifest() {
   done < "$file"
 }
 
+# Make sure each PRIVATE_DIRS entry that exists is mode 700, even if it was
+# created earlier or by something else.
+fix_private_modes() {
+  local dir mode
+  for dir in "${PRIVATE_DIRS[@]}"; do
+    [[ -d "$dir" ]] || continue
+    zstat -A mode +mode -- "$dir"
+    (( (mode & 8#777) == 8#700 )) && continue
+    if $DRY_RUN; then
+      print "  would chmod 700         ${dir/#$HOME/~} (is $(( [##8] mode & 8#777 )))"
+    else
+      chmod 700 "$dir"
+      print "  chmod   700 ${dir/#$HOME/~}"
+    fi
+  done
+}
+
 # Drop links into this repo whose source has since been deleted. Without this,
 # removing a file from home/ leaves a broken symlink in $HOME indefinitely.
 # Only the top level of $HOME is scanned - that is where the home/ convention
@@ -161,6 +187,7 @@ print "$PLATFORM ($PLATFORM/home/):"
 link_dir "$REPO/$PLATFORM/home"
 link_manifest "$REPO/$PLATFORM/links.conf"
 
+fix_private_modes
 prune_stale
 
 if (( PROBLEMS )); then
