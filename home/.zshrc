@@ -150,6 +150,8 @@ if [ -z "$SSH_AUTH_SOCK" ] ; then
   [ -f "$HOME/.ssh/id_ed25519" ] && ! ssh-add -l >/dev/null 2>&1 && ssh-add "$HOME/.ssh/id_ed25519"
 fi
 
+# -U keeps PATH free of duplicates, e.g. in nested shells or tmux.
+typeset -U path PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 # Platform-specific config.
