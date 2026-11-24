@@ -158,13 +158,12 @@ else
 fi
 
 # -----------------------------------------------------------
-# 11. Set up optional dev user with Claude Code + tmux
+# 11. Set up optional dev user with Claude Code
 # -----------------------------------------------------------
 echo ""
 echo "==> Dev user setup"
-echo "    Optionally create a non-root dev user with Claude Code, tmux, and"
-echo "    the cc/ccw helpers. The user will share your SSH key and have sudo"
-echo "    and docker access."
+echo "    Optionally create a non-root dev user with Claude Code. The user will"
+echo "    share your SSH key and have sudo and docker access."
 read -rp "    Dev username to create (press Enter to skip): " DEV_USER || DEV_USER=""
 
 if [[ -n "${DEV_USER:-}" ]]; then
@@ -238,8 +237,6 @@ if [[ -n "${DEV_USER:-}" ]]; then
     echo "     Next steps for '${DEV_USER}':"
     echo "       1. ssh ${DEV_USER}@<server-ip>"
     echo "       2. claude          — authenticate (one-time)"
-    echo "       3. cc              — start Claude Code in a persistent tmux session"
-    echo "       Ctrl+A, D          — detach (session keeps running)"
   fi
 fi
 
@@ -250,4 +247,4 @@ echo ""
 echo "==> Setup complete!"
 echo "    - Log out and back in (or run 'zsh') to start using your new shell."
 echo "    - Your old dotfiles (if any) were backed up to ~/.dotfiles-backup/"
-echo "    - Run 'claude' once to authenticate, then use 'cc' to start coding."
+echo "    - Run 'claude' once to authenticate."

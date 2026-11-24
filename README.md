@@ -47,7 +47,7 @@ macos/
 ubuntu/
   home/                   Linked on top of home/ on Ubuntu
     .zprofile
-    .zshrc.local          vim as EDITOR, Claude Code tmux helpers (cc/ccw/ccls/cckill)
+    .zshrc.local          vim as EDITOR
     .gitconfig.local      vim as editor
   install.sh
 link.sh                 Symlinks home/ then <platform>/home/ into $HOME

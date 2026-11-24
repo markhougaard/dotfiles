@@ -40,7 +40,7 @@ macos/
 ubuntu/
   home/
     .zprofile           pyenv shims (guarded)
-    .zshrc.local        vim EDITOR, Claude Code tmux helpers
+    .zshrc.local        vim EDITOR
     .gitconfig.local    vim as editor
   install.sh            apt, oh-my-zsh, plugins, NVM, dev-user provisioning
 link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
