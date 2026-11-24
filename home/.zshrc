@@ -47,9 +47,12 @@ unset _nvm_candidate
 # node/npm/npx stay immediately available; nvm.sh only loads if you actually call nvm.
 if [[ -r "$NVM_DIR/alias/default" ]]; then
   _nvm_default="$(<"$NVM_DIR/alias/default")"
-  [[ -d "$NVM_DIR/versions/node/$_nvm_default/bin" ]] &&
-    PATH="$NVM_DIR/versions/node/$_nvm_default/bin:$PATH"
-  unset _nvm_default
+  # The alias may be partial ("24", as `nvm alias default 24` writes it), so match
+  # v24 and v24.*, and take the newest installed one, as nvm does. (N/nOn): only
+  # directories, numeric sort, newest first, nothing if none match.
+  _nvm_bin=("$NVM_DIR"/versions/node/v${_nvm_default#v}(|.*)/bin(N/nOn))
+  (( $#_nvm_bin )) && PATH="$_nvm_bin[1]:$PATH"
+  unset _nvm_default _nvm_bin
 fi
 
 # Real nvm loads on first invocation, then re-dispatches.

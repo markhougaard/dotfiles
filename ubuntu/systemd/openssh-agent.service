@@ -1,0 +1,18 @@
+# One ssh-agent per user, on the socket home/.zshrc looks for
+# ($XDG_RUNTIME_DIR/openssh_agent). Only for machines whose OpenSSH has no
+# ssh-agent.socket (Ubuntu 24.04: 9.6 ships only a graphical-session
+# ssh-agent.service); without it .zshrc starts an agent per shell that never
+# exits. Where ssh-agent.socket exists, use that instead (ubuntu/AGENTS.md item 8).
+# Named openssh-agent so it can't shadow the distro's ssh-agent.service.
+[Unit]
+Description=ssh-agent for headless logins
+Documentation=man:ssh-agent(1)
+
+[Service]
+Type=simple
+ExecStartPre=/bin/rm -f %t/openssh_agent
+ExecStart=/usr/bin/ssh-agent -D -a %t/openssh_agent
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

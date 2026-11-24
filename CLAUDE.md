@@ -45,6 +45,7 @@ ubuntu/
   bin/ob                ob wrapper: pins obsidian-headless to apt's node
   systemd/
     obsidian-sync.service  continuous Obsidian Sync; copied, not linked
+    openssh-agent.service  per-user agent where OpenSSH has no ssh-agent.socket (24.04)
   links.conf            ~/.local/bin/ob
   AGENTS.md             The state an Ubuntu machine should be in: check + fix per
                         item. Replaces an install script; read it to set up or audit

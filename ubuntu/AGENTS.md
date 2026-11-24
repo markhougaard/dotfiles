@@ -44,11 +44,14 @@ cd ~/dotfiles && ~/.local/bin/claude "apply ubuntu/AGENTS.md"
 ## 1. apt packages
 
 Must be installed: `zsh git curl wget vim build-essential gpg git-lfs tmux ripgrep
-htop jq unzip gh nodejs npm`
+htop jq unzip gh`, plus `nodejs npm` **only where item 11 applies**.
 
 - Check: `dpkg-query -W -f='${Status}\n' <pkg>` prints `install ok installed` for each.
 - Fix: `sudo apt update && sudo apt install -y <the missing ones>`
 - `nodejs` and `npm` are for ob (item 11), not for development. Use NVM for that.
+  Where another repo owns ob (item 11's first check), they aren't needed: don't
+  install them, and report a system node that's there anyway (it may belong to that
+  repo; the server has none on purpose).
 - `gh` is required: `ubuntu/home/.gitconfig.local` gets GitHub credentials from
   `/usr/bin/gh`. After installing it, the user runs `gh auth login` once (it's
   interactive). Check with `gh auth status`.
@@ -137,8 +140,19 @@ htop jq unzip gh nodejs npm`
 - Must be: the shell doesn't start its own agent. `SSH_AUTH_SOCK` points at the
   systemd user agent's socket.
 - Check: `systemctl --user is-enabled ssh-agent.socket` prints `enabled`. In a
-  login shell, `echo $SSH_AUTH_SOCK` is `/run/user/<uid>/openssh_agent`.
+  login shell without a forwarded agent (`ssh -A` sets its own), `echo
+  $SSH_AUTH_SOCK` is `/run/user/<uid>/openssh_agent`, and `pgrep -u "$USER" -fx
+  'ssh-agent -s'` finds nothing.
 - Fix: `systemctl --user enable --now ssh-agent.socket`
+- **No `ssh-agent.socket`** (`systemctl --user cat ssh-agent.socket` fails; Ubuntu
+  24.04, OpenSSH 9.6, whose `ssh-agent.service` only starts in a graphical
+  session): use `ubuntu/systemd/openssh-agent.service` instead, same socket path.
+  Check: `diff` against `~/.config/systemd/user/openssh-agent.service` is empty
+  and `systemctl --user is-active openssh-agent` = `active`. Fix: `install -m 644`
+  it there, `systemctl --user daemon-reload && systemctl --user enable --now
+  openssh-agent`. Without either, `home/.zshrc` falls back to `ssh-agent -s` in
+  every shell and those agents never exit: kill the `ssh-agent -s` ones no process
+  uses any more (one whose socket no `/proc/*/environ` names).
 
 ## 9. Claude Code
 
