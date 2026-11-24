@@ -6,3 +6,12 @@
 	gpgsign = false
 [tag]
 	gpgsign = false
+
+# Get GitHub credentials from the gh CLI (written by `gh auth setup-git`).
+# The empty helper first clears any helpers set earlier.
+[credential "https://github.com"]
+	helper =
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/usr/bin/gh auth git-credential
