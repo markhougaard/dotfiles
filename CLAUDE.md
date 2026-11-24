@@ -64,6 +64,12 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
   the line is the destination, so paths with spaces need no quoting. A missing source
   or malformed line is reported and `link.sh` exits non-zero, rather than aborting
   half-linked.
+- **Machine-local skips**: `link.sh` leaves alone any destination listed in
+  `~/.config/dotfiles/skip` (untracked; one path per line, `~`/`$HOME` expanded, `#`
+  comments) and prints `skip` for it. Use it when another repo owns that path on one
+  machine, e.g. the server, where `/opt/multisite` installs `ob` and runs Obsidian
+  Sync as a system unit, so `~/.local/bin/ob` is skipped. A platform-wide exception
+  belongs in the platform's files instead.
 - **Private dirs**: `PRIVATE_DIRS` in `link.sh` (today just `~/.gnupg`) are created
   `700` and set back to `700` on every run. gpg warns about a group-writable homedir,
   and `mkdir -p` would create it with the default umask.

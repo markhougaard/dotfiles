@@ -107,8 +107,12 @@ htop jq unzip gh nodejs npm`
 
 ## 6. Dotfiles are linked
 
-- Check: `zsh ~/dotfiles/link.sh --dry-run ubuntu` prints only `ok` lines and
-  exits 0.
+- Check: `zsh ~/dotfiles/link.sh --dry-run ubuntu` prints only `ok` and `skip`
+  lines and exits 0.
+- A `skip` line comes from `~/.config/dotfiles/skip`: a machine-local list of link
+  destinations (one per line, `~` expanded, `#` comments) that `link.sh` leaves
+  alone because another repo owns them on that machine. It is not tracked. Don't
+  remove an entry to make the check pass; report it.
 - Fix: `zsh ~/dotfiles/link.sh ubuntu`. It moves anything in the way to
   `~/.dotfiles-backup/<timestamp>/` and removes stale links into the repo.
 - Do this after items 3–5, so the installers there can't overwrite a linked file.
@@ -156,6 +160,19 @@ The `tk` command the repos' `.tickets/` use. It's a single bash script.
 
 `~/marks-vault` is kept in sync with Obsidian Sync by `ob` (the npm package
 `obsidian-headless`), which runs all the time as a systemd user service.
+
+**First: does another repo own this here?** On some machines ob and the sync are
+installed by that machine's own repo instead (the server: `/opt/multisite`
+bootstrap pins ob under `/opt` and runs a **system** unit, so no code from the
+user's home runs in the service). Check: `systemctl cat obsidian-sync.service`
+shows a file under `/etc/systemd/system/`. If it does:
+
+- Skip the rest of this item. Report "owned by the system unit" and leave it alone.
+- `~/.config/dotfiles/skip` must list `~/.local/bin/ob` (item 6), so the wrapper
+  doesn't shadow the system's `ob` with one that points at a prefix this machine
+  doesn't have. Add the line if it's missing.
+- Never install or enable the user unit there: two `ob sync` processes on one vault
+  conflict.
 
 **Node for ob.** ob uses `better-sqlite3`, a native addon compiled for one node
 ABI, so ob breaks on any other node major version. ob therefore always runs on

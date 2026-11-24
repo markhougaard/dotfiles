@@ -105,6 +105,14 @@ VS Code writes through the symlink, so changing a setting in the UI updates the
 repo. If an update ever replaces the link with a plain file, `./link.sh --dry-run`
 will show it as needing to be re-linked.
 
+### Skipping a link on one machine
+
+When another repo owns a path on a particular machine, list it in
+`~/.config/dotfiles/skip` there (not tracked; one destination per line, `#`
+comments). `link.sh` then leaves that path alone and prints `skip`. The server uses
+this for `~/.local/bin/ob`, because `/opt/multisite` installs ob and runs Obsidian
+Sync as a system service.
+
 ### Shared vs platform-specific
 
 Files with the same name can't both be linked, so the shared files load the

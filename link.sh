@@ -49,6 +49,24 @@ BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 # turned into a non-zero exit at the end.
 typeset -i PROBLEMS=0
 
+# Machine-local opt-outs: destinations this machine must not get, because
+# something else owns them there (on the server, /opt/multisite installs ob and
+# runs Obsidian Sync as a system service). One destination per line, ~ and $HOME
+# expanded, # comments. Untracked on purpose: it describes one machine, not the
+# platform.
+SKIP_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/skip"
+typeset -a SKIP=()
+if [[ -r "$SKIP_FILE" ]]; then
+  # "|| [[ -n $line ]]" keeps a last line that has no trailing newline.
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%%\#*}"
+    line="${${line##[[:space:]]#}%%[[:space:]]#}"
+    [[ -z "$line" ]] && continue
+    line="${line/#\~/$HOME}"
+    SKIP+=("${line//\$HOME/$HOME}")
+  done < "$SKIP_FILE"
+fi
+
 # Directories that must be private (mode 700). gpg refuses to trust a homedir
 # others can write to, and mkdir -p would create it with the default umask.
 PRIVATE_DIRS=("$HOME/.gnupg")
@@ -59,6 +77,12 @@ zmodload -F zsh/stat b:zstat
 # behaviour stays identical for both the home/ convention and links.conf.
 link_one() {
   local src="$1" dest="$2" label="$3" saved
+
+  # Checked first: a skipped destination is left exactly as it is, link or not.
+  if (( ${SKIP[(Ie)$dest]} )); then
+    print "  skip    $label (in ${SKIP_FILE/#$HOME/~})"
+    return 0
+  fi
 
   # Report and keep going rather than aborting half-linked; main exits non-zero.
   if [[ ! -e "$src" ]]; then
