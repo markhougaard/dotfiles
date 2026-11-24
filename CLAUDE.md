@@ -42,7 +42,12 @@ ubuntu/
     .zprofile           pyenv shims (guarded)
     .zshrc.local        vim EDITOR
     .gitconfig.local    vim as editor
-  install.sh            apt, oh-my-zsh, plugins, NVM, dev-user provisioning
+  bin/ob                ob wrapper: pins obsidian-headless to apt's node
+  systemd/
+    obsidian-sync.service  continuous Obsidian Sync; copied, not linked
+  links.conf            ~/.local/bin/ob
+  AGENTS.md             The state an Ubuntu machine should be in: check + fix per
+                        item. Replaces an install script; read it to set up or audit
 link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
                         then applies any links.conf
 ```
@@ -59,6 +64,12 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
   the line is the destination, so paths with spaces need no quoting. A missing source
   or malformed line is reported and `link.sh` exits non-zero, rather than aborting
   half-linked.
+- **Private dirs**: `PRIVATE_DIRS` in `link.sh` (today just `~/.gnupg`) are created
+  `700` and set back to `700` on every run. gpg warns about a group-writable homedir,
+  and `mkdir -p` would create it with the default umask.
+- **systemd units are copied, never linked**: systemd treats a symlinked unit as
+  "linked", and `systemctl disable`/`reenable` deletes the link and its
+  `.wants/` entry. `ubuntu/AGENTS.md` copies them with `install` and checks with `diff`.
 - **Stale-link pruning**: `link.sh` deletes top-level `$HOME` symlinks that point
   into this repo at a source that no longer exists, so removing a file from `home/`
   cleans up after itself. It deliberately ignores links pointing elsewhere, broken
@@ -102,8 +113,10 @@ link.sh                 Symlinks home/ then <platform>/home/ into $HOME,
 
 ## Development Notes
 
-- `link.sh` and `macos/install.sh` are zsh; `ubuntu/install.sh` is bash. Check with
-  `zsh -n` / `bash -n` after editing.
+- `link.sh` and `macos/install.sh` are zsh. Check with `zsh -n` after editing.
+- Ubuntu setup is `ubuntu/AGENTS.md`, not a script. When you change what a machine
+  needs (a new package, a tool a dotfile depends on), add it there along with its
+  check, and give the reason.
 - `link.sh` globs `.[!.]*` so it skips `.` and `..`, with the `(N)` qualifier so an
   empty directory doesn't error under `set -u`. Non-dot files in `home/` are ignored
   by design.

@@ -1,0 +1,19 @@
+[Unit]
+Description=Obsidian Sync (ob, continuous) for ~/marks-vault
+Documentation=https://www.npmjs.com/package/obsidian-headless
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/ob sync --continuous --path %h/marks-vault
+WorkingDirectory=%h/marks-vault
+Restart=always
+RestartSec=30
+NoNewPrivileges=yes
+Nice=10
+
+[Install]
+WantedBy=default.target

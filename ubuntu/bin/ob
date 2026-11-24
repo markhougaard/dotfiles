@@ -1,0 +1,7 @@
+#!/bin/sh
+# ob (obsidian-headless), always on apt's node.
+#
+# better-sqlite3 is a native addon built for one node ABI, so running ob on a
+# different major version breaks it. Calling /usr/bin/node directly keeps ob
+# working whatever `nvm use` has put first on PATH. Installed by ubuntu/AGENTS.md.
+exec /usr/bin/node "$HOME/.local/share/obsidian-headless/lib/node_modules/obsidian-headless/cli.js" "$@"

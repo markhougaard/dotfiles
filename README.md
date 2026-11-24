@@ -14,9 +14,15 @@ git clone https://github.com/markhougaard/dotfiles.git ~/dotfiles
 **Ubuntu server:**
 
 ```bash
+curl -fsSL https://claude.ai/install.sh | bash
 git clone https://github.com/markhougaard/dotfiles.git ~/dotfiles
-bash ~/dotfiles/ubuntu/install.sh
+cd ~/dotfiles && ~/.local/bin/claude "apply ubuntu/AGENTS.md"
 ```
+
+Ubuntu has no install script. `ubuntu/AGENTS.md` describes the state the machine
+should be in, with a check and a fix for each part, and Claude brings the machine
+into line. To look for drift later, ask Claude to check the machine against
+`ubuntu/AGENTS.md`.
 
 This is an ordinary git repo. Use plain `git` in `~/dotfiles` — there is no alias
 and nothing special about your home directory.
@@ -49,7 +55,10 @@ ubuntu/
     .zprofile
     .zshrc.local          vim as EDITOR
     .gitconfig.local      vim as editor
-  install.sh
+  bin/ob                  Runs ob (Obsidian Sync) on apt's node, whatever NVM is set to
+  systemd/                User units, copied to ~/.config/systemd/user/
+  links.conf              ~/.local/bin/ob
+  AGENTS.md               The state an Ubuntu machine should be in, and how to check it
 link.sh                 Symlinks home/ then <platform>/home/ into $HOME
 ```
 
@@ -118,11 +127,13 @@ and `.nvmrc` auto-switching, Pure prompt, plugin list — lives once in `home/`.
 profile, then offers to run `macos/defaults.sh`. Every step is guarded, so it is
 safe to re-run.
 
-**`ubuntu/install.sh`** — apt packages, oh-my-zsh, Pure prompt, zsh plugins, NVM,
-diff-so-fancy, `link.sh ubuntu`, sets zsh as the default shell, installs Claude
-Code, and optionally provisions a non-root dev user with the same setup. Run it as
-the user you're setting up, never with `sudo` (it refuses): it calls `sudo` itself
-where it needs to, and under `sudo` everything would land in `/root`.
+**Ubuntu** has no install script. `ubuntu/AGENTS.md` covers apt packages
+(including `gh`), zsh as the login shell, oh-my-zsh, its plugins and Pure, NVM,
+diff-so-fancy, `link.sh ubuntu`, GnuPG permissions, the systemd ssh-agent, Claude
+Code, `tk`, and `ob` with continuous Obsidian Sync of `~/marks-vault`. Optional
+sections cover restic and tailscale for the machines that need them, and setting up
+a dev user. Run Claude as the user being set up,
+never under `sudo`.
 
 `macos/defaults.sh` is kept out of the automatic path: it uses `sudo`, clears the
 Dock, and needs a logout to fully apply.
